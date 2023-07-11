@@ -1,0 +1,259 @@
+local LocalPlayer       = game.Players.LocalPlayer
+local UserInputService  = game:GetService("UserInputService")
+local mouse             = LocalPlayer:GetMouse()
+local CC                = game.Workspace.CurrentCamera
+local LocalMouse        = LocalPlayer:GetMouse()
+local TweenService      = game:GetService("TweenService")
+local c                 = LocalPlayer.Character
+local hrp               = c.HumanoidRootPart
+local RunService        = game:GetService("RunService")
+
+local espLibrary        = loadstring(game:HttpGet('https://raw.githubusercontent.com/f1nobe7650/other/main/SiriusEsp'))() 
+
+local plrList           = {} -- Players in the game 
+for i,v in pairs(game:GetService("Players"):GetChildren()) do
+    if v ~= game.Players.LocalPlayer then
+        table.insert(plrList, v.Name)
+    end
+end
+
+
+
+local library  = loadstring(game:HttpGet("https://raw.githubusercontent.com/f1nobe7650/other/main/NoMercyUiLib"))()
+library:init()
+
+local menu = library.NewWindow({title  = "Im encode and I love Cock", size = UDim2.new(0,525,0,650)})
+local MainTab = menu:AddTab('Main')
+local VisualsTab = menu:AddTab('Visuals')
+local settingsTab = library:CreateSettingsTab(menu)
+
+ --Visuals
+ local VisualsSection = VisualsTab:AddSection('Main', 1)
+ local VisualsSettings = VisualsTab:AddSection('Visual Settings', 2)
+ local WorldVisuals = VisualsTab:AddSection('World Visuals', 2)
+
+ --// Main Visual Toggles
+ VisualsSection:AddToggle({text = "Enabled", flag = "Enabled", callback = function(a) 
+     espLibrary.options.enabled = library.flags["Enabled"]
+
+     if library.flags["Enabled"] then 
+         espLibrary:Load() 
+        else 
+        espLibrary:Unload() 
+     end 
+ end}):AddBind({text = "Enabled", flag = "Enabled", nomouse = false, noindicator = false, callback = function()
+ espLibrary.options.enabled = library.flags["Enabled"]
+end});
+
+ local Names = VisualsSection:AddToggle({text = "Names", flag = "Name", callback = function(a) 
+     espLibrary.options.names = library.flags["Name"]
+ end})
+
+ Names:AddColor({text = "Name Colour", flag = "Name Colour", color = Color3.fromRGB(255,255,255), callback = function(a) 
+     espLibrary.options.nameColor = library.flags["Name Colour"]
+ end})
+
+ local Boxes = VisualsSection:AddToggle({text = "Boxes", flag = "Box", callback = function(a) 
+     espLibrary.options.boxes = library.flags["Box"]
+ end})
+
+ Boxes:AddColor({text = "Box Colour", flag = "Box Colour", color = Color3.fromRGB(255,255,255), callback = function(a) 
+     espLibrary.options.boxesColor = library.flags["Box Colour"]
+ end})
+
+ local BoxFill = VisualsSection:AddToggle({text = "Box Fill", flag = "Box Fill", callback = function(a) 
+     espLibrary.options.boxFill = library.flags["Box Fill"]
+ end})
+
+ BoxFill:AddColor({text = "Box Fill Colour", flag = "Box Fill Colour", color = Color3.fromRGB(255,255,255), callback = function(a,b) 
+     espLibrary.options.boxFillColor = library.flags["Box Fill Colour"]
+     espLibrary.options.boxFillTransparency = b
+ end})
+
+ local HealthBar = VisualsSection:AddToggle({text = "Healthbar", flag = "Health", callback = function(a) 
+     espLibrary.options.healthBars = library.flags["Health"]
+ end})
+
+ HealthBar:AddColor({text = "HealthBar Colour", flag = "Box Fill Colour", color = Color3.fromRGB(255,255,255),transparency = 0.5, callback = function(a,b) 
+     espLibrary.options.healthBarsColor = library.flags["Box Fill Colour"]
+ end})
+
+ local Health_Number = VisualsSection:AddToggle({text = "Health Number", flag = "HealthNumber", callback = function(a) 
+     espLibrary.options.healthText = library.flags["HealthNumber"]
+ end})
+
+ Health_Number:AddColor({text = "HealthBar Colour", flag = "Health Text Colour", color = Color3.fromRGB(0,255,0), callback = function(a,b) 
+     espLibrary.options.healthTextColor = library.flags["Health Text Colour"]
+ end})
+
+ local Distance = VisualsSection:AddToggle({text = "Distance", flag = "Distance", callback = function(a) 
+     espLibrary.options.distance = library.flags["Distance"]
+ end}):AddColor({text = "Distance Colour", flag = "Distance Colourr", color = Color3.fromRGB(255,255,255), callback = function() 
+     espLibrary.options.distanceColor = library.flags["Distance Colourr"]
+ end})
+
+ local Arrows = VisualsSection:AddToggle({text = "Arrows", flag = "Arrows", callback = function(a) 
+     espLibrary.options.outOfViewArrows = library.flags["Arrows"]
+ end})
+
+ Arrows:AddColor({text = "Arrow Colour", flag = "Arrow Colour", color = Color3.fromRGB(0,255,0),transparency = 0.5, callback = function(a,b) 
+    espLibrary.options.outOfViewArrowsColor = library.flags["Arrow Colour"]
+ end})
+
+ local ArrowsOutline = VisualsSection:AddToggle({text = "Arrow Outline", flag = "Arrow Outline", callback = function(a) 
+     espLibrary.options.outOfViewArrowsOutline = library.flags["Arrow Outline"]
+ end})
+
+ ArrowsOutline:AddColor({text = "Arrow Outline Colour", flag = "Outline Colour", color = Color3.fromRGB(255,255,255),transparency = 0.5, callback = function(a,b) 
+     espLibrary.options.outOfViewArrowsOutlineColor = library.flags["Outline Colour"]
+ end})
+
+ local Chams = VisualsSection:AddToggle({text = "Chams", flag = "Chams", callback = function(a) 
+     espLibrary.options.chams = library.flags["Chams"]
+ end})
+
+
+ Chams:AddColor({text = "Fill Colour", flag = "Fill Colour", tooltip = "Fill", color = Color3.fromRGB(255,0,0),transparency = 0.5, callback = function(a,b) 
+     espLibrary.options.chamsFillColor = library.flags["Fill Colour"]
+     espLibrary.options.chamsFillTransparency = b
+ end})
+
+ Chams:AddColor({text = "Outline Colour", flag = "Outline Colour", color = Color3.fromRGB(0,0,0),transparency = 0.5, tooltip = "Outline", callback = function(a,b) 
+     espLibrary.options.chamsOutlineColor = library.flags["Outline Colour"]
+     espLibrary.options.chamsOutlineTransparency = b
+ end})
+
+
+ local Tracers = VisualsSection:AddToggle({text = "Tracers", flag = "Tracers", callback = function(a)
+     espLibrary.options.tracers = library.flags["Tracers"]
+ end})
+
+ Tracers:AddColor({text = "Tracer Colour", flag = "Tracer Colour", color = Color3.fromRGB(0,0,0),transparency = 0.5, tooltip = "Outline", callback = function(a,b) 
+     espLibrary.options.tracerColor = library.flags["Tracer Colour"]
+ end})
+
+
+
+
+ -- Visuals Settings 
+ VisualsSettings:AddSlider({text = "Font Size", flag = "FontSize", min = 0, max = 50, value = 13, callback = function(a)
+     espLibrary.options.fontSize = library.flags["FontSize"]
+ end})
+
+
+ VisualsSettings:AddList({text = "Font", values = {"UI", "System", "Plex", "Monospace"}, value = "Plex", flag = "Font", callback = function(a)
+     if library.flags["Font"] == "UI" then 
+        espLibrary.options.font = 0
+        elseif library.flags["Font"] == "Monospace" then 
+        espLibrary.options.font = 3
+        elseif library.flags["Font"] == "Plex" then 
+        espLibrary.options.font = 2
+        elseif library.flags["Font"] == "System" then 
+        espLibrary.options.font = 1
+     end 
+ end})
+
+
+
+ VisualsSettings:AddList({text = "Tracer Origin", values = {"Mouse", "Top", "Bottom"}, value = "Bottom", flag = "Tracer Origin", callback = function(a)
+    espLibrary.options.tracerOrigin = library.flags["Tracer Origin"]
+ end})
+
+
+ VisualsSettings:AddToggle({text = "Visible Only", flag = "VisibleOnly", callback = function(a)
+     espLibrary.options.visibleOnly = library.flags["VisibleOnly"]
+ end})
+
+ VisualsSettings:AddSlider({text = "Arrow Size", flag = "Arrow Size", min = 0, max = 25, value = 15, callback = function(a)
+    espLibrary.options.outOfViewArrowsSize = library.flags["Arrow Size"]
+ end})
+
+  VisualsSettings:AddSlider({text = "Arrow Radius", flag = "Arrow Radius", min = 0, max = 50, value = 15, callback = function(a)
+    espLibrary.options.outOfViewArrowsRadius = library.flags["Arrow Radius"] * 10 
+ end})
+
+
+ --// World Visuals
+
+ local StretchResolution = WorldVisuals:AddToggle({text = "Aspect Ratio", flag = "Aspect Ratio", callback = function(a)
+ end})
+
+ StretchResolution:AddSlider({text = "Aspect Ratio", flag = "Ratio", min = 0, max = 100, value = 50, callback = function(a)
+ end})
+
+
+ local CamLock = MainTab:AddSection('CamLock', 2)
+
+
+
+
+
+
+
+
+     espLibrary.options.tracers = library.flags["Tracers"]
+     espLibrary.options.chams = library.flags["Chams"]
+     espLibrary.options.outOfViewArrowsOutline = library.flags["Arrow Outline"]
+     espLibrary.options.outOfViewArrows = library.flags["Arrows"]
+     espLibrary.options.distance = library.flags["Distance"]
+     espLibrary.options.healthText = library.flags["HealthNumber"]
+     espLibrary.options.healthBars = library.flags["Health"]
+     espLibrary.options.boxFillColor = library.flags["Box Fill Colour"]
+     espLibrary.options.boxFill = library.flags["Box Fill"]
+     espLibrary.options.boxesColor = library.flags["Box Colour"]
+     espLibrary.options.boxes = library.flags["Box"]
+     espLibrary.options.nameColor = library.flags["Name Colour"]
+     espLibrary.options.names = library.flags["Name"]
+     espLibrary.options.enabled = library.flags["Enabled"]
+     espLibrary.options.healthTextColor = library.flags["Health Text Colour"]
+
+
+
+
+  --[[
+  Docs 
+
+
+  -- Slider
+Targetaim:AddSlider({text = "Font Size", flag = "FontSize", min = 0, max = 50, value = 13, tooltip = "changes things", suffix = "ms", increment = 1, callback = function(state)   end})
+
+-- Box 
+Targetaim:AddBox({Text = "cool", flag = "cool_flag2", focused = false, input = "default example", callback = function(a)
+  print(a)
+end})
+
+--Button 
+Targetaim:AddButton({Text = "cool", callback = function()
+  print("clicked")
+end})
+
+-- Toggle + Colour Picker 
+Targetaim:AddToggle({text = "Target Bot", callback = function(a)
+end}):AddColor({text = "esp color", flag = "cool_flag", tooltip = "changes the esp color", color = Color3.fromRGB(255,255,255), callback = function(a)
+end})
+
+
+--Notif 
+
+library:SendNotification('octohook | DISCORD WAS TERMED. AUTO JOINED.')
+
+  ]]
+
+
+
+
+
+
+--// Make sure to keep everything library relatated above 
+
+RunService.heartbeat:Connect(function()
+
+end)
+
+OldNewIndex = hookmetamethod(game, "__newindex", function(self, Key, Value)
+    if (self == game.Workspace.CurrentCamera and Key == "CFrame") and library.flags["Aspect Ratio"] then 
+        local X, Y, Z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = Value:GetComponents()
+        Value = CFrame.new(X, Y, Z, R00, R01 * library.flags["Ratio"]/100, R02, R10, R11 * library.flags["Ratio"]/100, R12, R20, R21 * library.flags["Ratio"]/100, R22)
+    end
+    return OldNewIndex(self, Key, Value)
+end)

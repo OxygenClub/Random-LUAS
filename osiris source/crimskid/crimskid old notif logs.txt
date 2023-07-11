@@ -1,0 +1,178 @@
+local runService = game:GetService("RunService")
+
+local eventLogs = {}
+
+
+
+local function createDrawing(type, prop)
+    local obj = Drawing.new(type)
+    if prop then
+        for i,v in next, prop do
+            obj[i] = v
+        end
+    end
+    return obj
+end
+
+
+function createEventLog(text, time)
+    local eventLog = {
+        text = text,
+        startTick = tick(),
+        lifeTime = time,
+        titleshadow = createDrawing("Text", {
+           Center = false,
+           Outline = false,
+           Color = Color3.new(),
+           Transparency = 200/255,
+           Text = "[crimskid]",
+           Size = 13,
+           Font = 2,
+           Visible = false
+        }),
+        title = createDrawing("Text", {
+           Center = false,
+           Outline = false,
+           Color = Color3.fromRGB(0, 162, 255),
+           Transparency = 1,
+           Text = "[crimskid]",
+           Size = 13,
+           Font = 2,
+           Visible = false
+        }),
+        title2 = createDrawing("Text", {
+            Center = false,
+            Outline = false,
+            Color = Color3.fromRGB(0, 162, 255),
+            Transparency = 1,
+            Text = "[crimskid]",
+            Size = 13,
+            Font = 2,
+            Visible = false
+         }),
+       shadowText = createDrawing("Text", {
+           Center = false,
+           Outline = false,
+           Color = Color3.new(),
+           Transparency = 200/255,
+           Text = text,
+           Size = 13,
+           Font = 2,
+           Visible = false
+       }),
+       mainText = createDrawing("Text", {
+           Center = false,
+           Outline = false,
+           Color = Color3.new(1, 1, 1),
+           Transparency = 1,
+           Text = text,
+           Size = 13,
+           Font = 2,
+           Visible = false
+       }),
+       mainText2 = createDrawing("Text", {
+            Center = false,
+            Outline = false,
+            Color = Color3.new(1, 1, 1),
+            Transparency = 1,
+            Text = text,
+            Size = 13,
+            Font = 2,
+            Visible = false
+        })
+    }
+
+    function eventLog:Destroy()
+        local shadowTextOrigin = self.shadowText.Position
+        local mainTextOrigin = self.mainText.Position
+        local mainText2Origin = self.mainText2.Position
+        local shadowTextTrans = self.shadowText.Transparency
+        local mainTextTrans = self.mainText.Transparency
+        local mainText2Trans = self.mainText2.Transparency
+        local titleTextOrigin = self.title.Position
+        local titleTextTrans = self.title.Transparency
+        local title2TextOrigin = self.title2.Position
+        local title2TextTrans = self.title2.Transparency
+        local titleshadowTextOrigin = self.titleshadow.Position
+        local titleshadowTextTrans = self.titleshadow.Transparency
+        for i = 0, 1, 1/60 do
+           self.title.Position = titleTextOrigin:Lerp(Vector2.new(), i)
+           self.title.Transparency = titleTextTrans * (1 - i)
+           self.title2.Position = title2TextOrigin:Lerp(Vector2.new(1, 0), i)
+           self.title2.Transparency = title2TextTrans * (1 - i)
+           self.titleshadow.Position = titleshadowTextOrigin:Lerp(Vector2.new(1, 0), i)
+           self.titleshadow.Transparency = titleshadowTextTrans * (1 - i)
+           self.shadowText.Position = shadowTextOrigin:Lerp(Vector2.new(), i)
+           self.mainText.Position = mainTextOrigin:Lerp(Vector2.new(), i)
+           self.mainText2.Position = mainText2Origin:Lerp(Vector2.new(), i)
+           self.shadowText.Transparency = shadowTextTrans * (1 - i)
+           self.mainText.Transparency = mainTextTrans * (1 - i)
+           self.mainText2.Transparency = mainText2Trans * (1 - i)
+           runService.RenderStepped:Wait()
+        end
+        self.title:Remove()
+        self.title2:Remove()
+        self.titleshadow:Remove()
+        self.mainText:Remove()
+        self.mainText2:Remove()
+        self.shadowText:Remove()
+        self.mainText = nil
+        self.shadowText = nil
+        self.title = nil
+        self.title2 = nil
+        self.titleshadow = nil
+        self.mainText2 = nil
+        table.clear(self)
+        self = nil
+    end
+
+    table.insert(eventLogs, eventLog)
+    return eventLog
+end
+
+
+
+
+runService.RenderStepped:Connect(function(deltaTime)
+    local count = #eventLogs
+    local removedFirst = false
+    for i = 1, count do
+        local curTick = tick()
+        local eventLog = eventLogs[i]
+        if eventLog then
+            if curTick - eventLog.startTick > eventLog.lifeTime then
+               task.spawn(eventLog.Destroy, eventLog)
+               table.remove(eventLogs, i)
+            elseif count > 10 and not removedFirst then
+               removedFirst = true
+               local first = table.remove(eventLogs, 1)
+               task.spawn(first.Destroy, first)
+            else
+                local previousEventLog = eventLogs[i - 1]
+                local basePosition
+                if previousEventLog then
+                    basePosition = Vector2.new(4, previousEventLog.mainText.Position.y + previousEventLog.mainText.TextBounds.y + 1)
+                else
+                    basePosition = Vector2.new(4, 50 + 4)
+                end
+                eventLog.titleshadow.Position = basePosition + Vector2.new(2, 1)
+                eventLog.titleshadow.Visible = true
+                eventLog.title.Position = basePosition
+                eventLog.title.Visible = true
+                eventLog.title2.Position = basePosition + Vector2.new(1, 0)
+                eventLog.title2.Visible = true
+                eventLog.shadowText.Position = basePosition + Vector2.new(1, 1) + Vector2.new(eventLog.title.TextBounds.x + 7, 0)
+                eventLog.mainText.Position = basePosition + Vector2.new(eventLog.title.TextBounds.x + 5, 0)
+                eventLog.mainText2.Position = basePosition + Vector2.new(eventLog.title.TextBounds.x + 6, 0)
+                eventLog.shadowText.Visible = true
+                eventLog.mainText.Visible = true
+                eventLog.mainText2.Visible = true
+            end
+        end
+    end
+end)
+
+getgenv().createEventLog = createEventLog
+
+createEventLog("Example log.")
+createEventLog(string.format("hurt %s in the %s for %s (%s health remaining)", "Nick",  "head", "56", "44"))

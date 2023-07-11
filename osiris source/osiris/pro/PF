@@ -1,0 +1,582 @@
+local UIS                   = game:GetService("UserInputService")
+local Tween                 = game:GetService("TweenService")
+local Run                   = game:GetService("RunService")
+local Lighting              = game:GetService("Lighting")
+local ReplicatedStorage     = game:GetService("ReplicatedStorage")
+local Camera                = game.Workspace.CurrentCamera
+local floor, rad, sin, abs, halfpi = math.floor, math.rad, math.sin, math.abs, math.pi / 2 
+local CC                    = game.Workspace.CurrentCamera
+local LocalMouse            = game.Players.LocalPlayer:GetMouse()
+local lp                    = game.Players.LocalPlayer
+local ws                    = game.Workspace 
+local Mouse                 = lp:GetMouse() 
+local Players               = game:GetService("Players")
+local Materials             = { "ForceField","Neon","Plastic","SmoothPlastic" }
+local BodyParts             = { "Head","Torso","Right Leg","Left Leg","Right Arm","Left Arm"}
+
+local game_client = {}
+--// getgc stuffs
+do
+    local garbage = getgc(true)
+    local loaded_modules = getloadedmodules()
+
+    for i = 1, #garbage do
+        local v = garbage[i]
+        if typeof(v) == "table" then
+            if rawget(v, "send") then -- Networking Module
+                game_client.network = v
+            elseif rawget(v, 'goingLoud') and rawget(v, 'isInSight') then -- Useful for Radar Hack or Auto Spot
+                game_client.spotting_interface = v
+            elseif rawget(v, 'bulletAcceleration') then
+                game_client.bulletAccel = v
+            elseif rawget(v, 'setMinimapStyle') and rawget(v, 'setRelHeight') then -- Useful for Radar Hack
+                game_client.radar_interface = v
+            elseif rawget(v, "getCharacterModel") and rawget(v, 'popCharacterModel') then -- Used for Displaying other Characters
+                game_client.third_person_object = v
+            elseif rawget(v, "getCharacterObject") then -- Used for sending LocalPlayer Character Data to Server
+                game_client.character_interface = v
+            elseif rawget(v, "isSprinting") and rawget(v, "getArmModels") then -- Used for sending LocalPlayer Character Data to Server
+                game_client.character_object = v
+            elseif rawget(v, "updateReplication") and rawget(v, "getThirdPersonObject") then -- This represents a "Player" separate from their character
+                game_client.replication_object = v
+            elseif rawget(v, "setHighMs") and rawget(v, "setLowMs") then -- Same as above
+                game_client.replication_interface = v
+            elseif rawget(v, 'setSway') and rawget(v, "_applyLookDelta") then -- You can modify camera values with this
+                game_client.main_camera_object = v
+            elseif rawget(v, 'getActiveCamera') and rawget(v, "getCameraType") then -- You can modify camera values with this
+                game_client.camera_interface = v
+            elseif rawget(v, 'getFirerate') and rawget(v, "getFiremode") then -- Weapon Stat Hooks
+                game_client.firearm_object = v
+            elseif rawget(v, 'canMelee') and rawget(v, "_processMeleeStateChange") then -- Melee Stat Hooks
+                game_client.melee_object = v
+            elseif rawget(v, 'canCancelThrow') and rawget(v, "canThrow") then -- Grenade Stat Hooks
+                game_client.grenade_object = v
+            elseif rawget(v, "vote") then -- Useful for Auto Vote
+                game_client.votekick_interface = v
+            elseif rawget(v, "getActiveWeapon") then -- Useful for getting current weapon
+                game_client.weapon_controller_object = v
+            elseif rawget(v, "getController") then -- Useful for getting your current weapon
+                game_client.weapon_controller_interface = v
+            elseif rawget(v, "updateVersion") and rawget(v, "inMenu") then -- Useful for chat spam :)
+                game_client.chat_interface = v
+            elseif rawget(v, "trajectory") and rawget(v, "timehit") then -- Useful for ragebot (Note: This table is frozen, use setreadonly)
+                game_client.physics = v
+            elseif rawget(v, "slerp") and rawget(v, "toanglesyx") then -- Useful for angles (Note: This table is frozen, use setreadonly)
+                game_client.vector = v
+            end
+        end
+    end
+
+    for i = 1, #loaded_modules do
+        local v = loaded_modules[i]
+        if v.Name == "PlayerSettingsInterface" then -- I use this for dynamic fov
+            game_client.player_settings = require(v)
+        elseif v.Name == "PublicSettings" then -- Get world data from here
+            game_client.PBS = require(v)
+        elseif v.Name == "particle" then -- Useful for silent aim
+            game_client.particle = require(v)
+        elseif v.Name == "CharacterInterface" then
+            game_client.LocalPlayer = require(v)
+        elseif v.Name == "WeaponControllerInterface" then
+            game_client.WCI = require(v)
+        elseif v.Name == "ActiveLoadoutUtils" then
+            game_client.active_loadout = require(v)
+        elseif v.Name == "GameClock" then
+            game_client.game_clock = require(v)
+        elseif v.Name == "PlayerDataStoreClient" then
+            game_client.player_data = require(v)
+        elseif v.Name == "ReplicationInterface" then
+            game_client.replication = require(v)
+        elseif v.Name == "BulletCheck" then -- Wall Penetration for ragebot
+            game_client.bullet_check = require(v)
+        elseif v.Name == "WeaponObject" then
+            game_client.WeaponObject = require(v)
+        elseif v.Name == "HudStatusInterface" then
+            game_client.HudStatusInterface = require(v)
+        end
+    end
+end
+--// Funny function to get health and alive n stuff
+local function getInfo(player,info)
+    return game_client.replication_interface.getEntry(player)[info]
+end
+
+local library, pointers = loadstring(game:HttpGet("https://hvh.wtf/p/raw/osiris/5hroechoi8"))()
+--// Library Init
+local Window = library:New({Name = "dx11.solutions", Style = 1, PageAmmount = 4, Size = Vector2.new(602, 629)});
+--
+local Legit = Window:Page({Name = "Legit"}); do
+    local AimAssist = Legit:Section({Name = "Aim Assist", Fill = true}); do
+        AimAssist:Toggle({Name = "Enabled", Pointer = "LegitAimAssist_Enabled"}):Keybind({Pointer = "LegitAimAssist_EnabledKey", Default = Enum.UserInputType.MouseButton2, Mode = "Hold"});
+        AimAssist:Slider({Name = "Horizontal Smoothing", Pointer = "LegitAimAssist_HorizontalSmoothing", Min = 0, Max = 100, Default = 10, Decimals = 0.1, Suffix = "%"});
+        AimAssist:Slider({Name = "Vertical Smoothing", Pointer = "LegitAimAssist_VerticalSmoothing", Min = 0, Max = 100, Default = 10, Decimals = 0.1, Suffix = "%"});
+        AimAssist:Toggle({Name = "Max FOV", Pointer = "LegitAimAssist_MaxFOV"});
+        AimAssist:Slider({Name = "FOV Amount", Pointer = "LegitAimAssist_FieldOfView", Min = 0, Max = 100, Default = 10, Decimals = 0.1, Suffix = "%"});
+        AimAssist:Dropdown({Name = "FOV Type", Pointer = "LegitAimAssist_FOVType", Options = {"Static","Dynamic"}, Default = "Static"});
+        AimAssist:Multibox({Name = "Aim Bone", Pointer = "LegitAimAssist_Hitbox", Options = {"Head", "Torso", "Arms", "Legs", "Upper Top", "Top", "Lower", "All"}, Default = {"Head"}, Min = 1, Max = 8});
+        AimAssist:Multibox({Name = "Aim Assist Checks", Pointer = "LegitAimAssist_Checks", Options = {"Team Check", "Wall Check", "Visible Check", "ForceField Check", "Alive Check"}, Default = {}, Min = 0, Max = 5});
+        AimAssist:Toggle({Name = "Readjustment", Pointer = "LegitAimAssist_Readjustment"});
+        AimAssist:Slider({Name = "Deadzone", Pointer = "LegitAimAssist_DeadzoneAmmount", Min = 0, Max = 100, Default = 10, Decimals = 0.1, Suffix = "%", Disable = {"Disabled", 0, 100}});
+    end;
+    --
+    local TriggerBot = Legit:Section({Name = "Trigger Bot", Side = "Right", Size = 276}); do
+        TriggerBot:Toggle({Name = "Enabled", Pointer = "LegitTriggerbot_Enabled"}):Keybind({Pointer = "LegitTriggerbot_EnabledKey", Mode = "On Hold"});
+        TriggerBot:Slider({Name = "Delay", Pointer = "LegitTriggerbot_Delay", Min = 0, Max = 500, Default = 10, Decimals = 0.1, Suffix = "ms"});
+        TriggerBot:Slider({Name = "Interval", Pointer = "LegitTriggerbot_Interval", Min = 0, Max = 100, Default = 75, Decimals = 1, Suffix = "ms"});
+        TriggerBot:Multibox({Name = "Aim Bone", Pointer = "LegitTriggerbot_Hitbox", Options = BodyParts, Default = {"Head"}, Min = 1, Max = 8});
+        TriggerBot:Multibox({Name = "Trigger Bot Checks", Pointer = "LegitTriggerbot_Checks", Options = {"Team Check", "Wall Check", "Visible Check", "ForceField Check", "Alive Check"}, Default = {}, Min = 0, Max = 5});
+        TriggerBot:Dropdown({Name = "Wall Check Origin", Pointer = "LegitTriggerbot_WallCheckOrigin", Options = {"Camera", "Head", "Torso"}, Default = "Camera"});
+        TriggerBot:Toggle({Name = "Readjustment", Pointer = "LegitTriggerbot_Readjustment"});
+    end;
+    --nigger
+    local Misc = Legit:Section({Name = "Misc", Side = "Right", Size = 276}); do
+        Misc:Toggle({Name = "Cursor Offset", Pointer = "LegitMisc_CursorOffset"});
+        Misc:Slider({Pointer = "LegitMisc_CursorOffsetX", Min = 0, Max = 100, Default = 10, Decimals = 0.1, Suffix = "px"});
+        Misc:Slider({Pointer = "LegitMisc_CursorOffsetY", Min = 0, Max = 100, Default = 10, Decimals = 0.1, Suffix = "px"});
+    end;
+end;
+--
+local Visuals = Window:Page({Name = "Visuals"}); do
+    local ESP = Visuals:Section({Name = "ESP", Fill = true}); do
+        ESP:Toggle({Name = "Enabled", Pointer = "PlayersESP_Enabled"});
+        ESP:Toggle({Name = "Name", Pointer = "PlayersESP_Name"})--:Colorpicker({default = Color3.fromRGB(255,255,255)});
+        ESP:Toggle({Name = "Bounding Box", Pointer = "PlayersESP_BoundingBox"})--:Colorpicker({default = Color3.fromRGB(255,255,255)});
+        ESP:Toggle({Name = "Health Bar", Pointer = "PlayersESP_HealthBar"})--:Colorpicker({default = Color3.fromRGB(255,255,255)});
+        ESP:Toggle({Name = "Health Number", Pointer = "PlayersESP_HealthNumber"});
+        ESP:Toggle({Name = "Distance", Pointer = "PlayersESP_Distance"});
+        ESP:Toggle({Name = "Tool", Pointer = "PlayersESP_Tool"});
+        ESP:Toggle({Name = "Enemies", Pointer = "PlayersESP_Enemies"});
+        ESP:Toggle({Name = "Friendlies", Pointer = "PlayersESP_Friendlies"});
+        ESP:Toggle({Name = "Local", Pointer = "PlayersESP_Local"});
+        ESP:Slider({Name = "Max Distance", Pointer = "PlayersESP_MaxDistance", Min = 0, Max = 5000, Default = 1000});
+    end;
+
+    local world_section,self_section,cursor_section = Visuals:MultiSection({sections = {"World","Self","Cursor"}, side = "Right", Size = 450}) do 
+        
+        --// World Section / World Visuals
+        do 
+            local Ambient = world_section:Toggle({pointer = "visuals_custom_ambient",name = "Custom Ambient", def = false})
+            Ambient:Colorpicker({pointer = "visuals_ambient",name = "Ambient Color",default = Color3.fromRGB(255,255,255)}) 
+            Ambient:Colorpicker({pointer = "visuals_outdoor_ambient",name = "Ambient Color",default = Color3.fromRGB(255,255,255)}) 
+            --
+            world_section:Toggle({pointer = "visuals_custom_color_shift", name = "Custom Color Shift", def = false }):Colorpicker({pointer = "visuals_custom_color_shift_top",name = "Ambient Color",default = Color3.fromRGB(255,255,255)}):Colorpicker({pointer = "visuals_custom_color_shift_bottom",name = "Outside Color",default = Color3.fromRGB(255,255,255)}) 
+            --
+            world_section:Toggle({pointer = "visuals_custom_shadows", name = "Global Shadows", def = true }):Colorpicker({pointer = "visuals_custom_shadows_color",name = "Shadows Color",default = Color3.fromRGB(170,170,170)})
+            world_section:Slider({pointer = "visuals_custom_shadows_softness", name = "Shadow Softness: ", def = 0.65,min = 0, max = 1, prefix = "%",decimals = 0.01})
+            --
+            world_section:Toggle({pointer = "visuals_custom_brightness", name = "Custom Brightness", def = false })
+            world_section:Slider({pointer = "visuals_custom_brightness_number", name = "Brightness: ", def = 1,min = 0, max = 5, decimals = 0.1})
+            --
+            world_section:Toggle({pointer = "visuals_custom_exposure", name = "Custom Exposure", def = false })
+            world_section:Slider({pointer = "visuals_custom_exposure_number", name = "Exposure: ", def = 1, min = -5, max = 5, decimals = 0.01})
+            --
+            world_section:Toggle({pointer = "visuals_custom_clock_time", name = "Custom Clock Time", def = false })
+            world_section:Slider({pointer = "visuals_custom_clock_time_number", name = "Clock Time: ", def = 0, min = 0.1, max = 24, prefix = "hr",decimals = 0.1})
+            world_section:Dropdown({pointer = "visuals_custom_technology",name = "Custom Technology",options = {"Future", "ShadowMap", "Compatibility", "Voxel"},def = "Voxel",callback = function(s) sethiddenproperty(Lighting, "Technology", s) end})
+            --
+            world_section:Toggle({pointer = "visuals_fog", name = "Fog", def = false }):Colorpicker({pointer = "visuals_fog_color",name = "Fog Color",default = Color3.fromRGB(255,255,255)})
+            world_section:Slider({pointer = "visuals_fog_start", name = "Fog Start: ", def = 750, min = 0, max = 5000, decimals = 0.1})
+            world_section:Slider({pointer = "visuals_fog_end", name = "Fog End: ", def = 750, min = 0, max = 5000, decimals = 0.1})
+            --
+            world_section:Toggle({pointer = "disable_rendering", name = "Disable Rendering", def = false,function()
+                Run:Set3DRenderingEnabled(not pointers["disable_rendering"]:get())
+            end})
+        end 
+        --// Self Visuals / Character Visual stuffs
+        do
+            local ArmCham = self_section:Toggle({Name = "Arm Chams", Pointer = "arm_chams"})
+            ArmCham:Colorpicker({pointer = "arm_chams_color",name = "Arms Color",default = Color3.fromRGB(255,255,255),transparency = 0}) 
+            self_section:Dropdown({Name = "Theme", Pointer = "arm_chams_material", Options = Materials});
+            --
+            local GunCham = self_section:Toggle({Name = "Gun Chams", Pointer = "gun_chams"});
+            GunCham:Colorpicker({pointer = "gun_chams_color",name = "Gun Color",default = Color3.fromRGB(255,255,255),transparency = 0}) 
+            self_section:Dropdown({Name = "Theme", Pointer = "gun_chams_material", Options = Materials});
+        end 
+        
+    end;
+end;
+--
+local Misc = Window:Page({Name = "Misc"}); do
+    local Pathfinding = Misc:Section({ Name = "Pathfinding", Fill = true }); do
+        Pathfinding:Toggle({Name = "Enabled", Pointer = "Pathfinding_Enabled"}); do
+            Pathfinding:Slider({Name = "Seperation - X", Pointer = "Pathfinding_Seperation_X", Min = 1, Max = 50, Default = 6});
+            Pathfinding:Slider({Name = "Seperation - Y", Pointer = "Pathfinding_Seperation_Y", Min = 1, Max = 50, Default = 6});
+            Pathfinding:Slider({Name = "Seperation - Z", Pointer = "Pathfinding_Seperation_Z", Min = 1, Max = 50, Default = 6});
+            --
+            Pathfinding:Label({Name = "Visualization", Middle = true}); do
+                Pathfinding:Toggle({Name = "Map", Pointer = "Pathfinding_Visualize_Map"});
+                Pathfinding:Toggle({Name = "Path", Pointer = "Pathfinding_Visualize_Path"});
+            end;
+        end;
+    end;
+end;
+--
+local Settings = Window:Page({Name = "Settings"}); do
+    local PlayerList = Settings:PlayerList({});
+    local themes = {
+        Default = {
+            accent = Color3.fromRGB(50, 43, 143),
+            lightcontrast = Color3.fromRGB(32,32,32),
+            darkcontrast = Color3.fromRGB(25,25,25),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(45,45,45),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Nebula = {
+            accent = Color3.fromRGB(192, 76, 255),
+            lightcontrast = Color3.fromRGB(17,19,23),
+            darkcontrast = Color3.fromRGB(15,17,19),
+            outline = Color3.fromRGB(31,29,29),
+            inline = Color3.fromRGB(0, 0, 0),
+            textcolor = Color3.fromRGB(192, 192, 192),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Neko = {
+            accent = Color3.fromRGB(226, 30, 112),
+            lightcontrast = Color3.fromRGB(18,18,18),
+            darkcontrast = Color3.fromRGB(15,15,15),
+            outline = Color3.fromRGB(0, 0, 0),
+            inline = Color3.fromRGB(50, 50, 50),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Spotify = {
+            accent = Color3.fromRGB(77, 255, 138),
+            lightcontrast = Color3.fromRGB(18,18,18),
+            darkcontrast = Color3.fromRGB(15,15,15),
+            outline = Color3.fromRGB(0, 0, 0),
+            inline = Color3.fromRGB(50, 50, 50),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Fatality = {
+            accent = Color3.fromRGB(197, 7, 84),
+            lightcontrast = Color3.fromRGB(30,24,66),
+            darkcontrast = Color3.fromRGB(25, 19, 53),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(60, 53, 93),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        ["Tokyo Night"] = {
+            accent = Color3.fromRGB(103, 89, 179),
+            lightcontrast = Color3.fromRGB(25, 25, 37),
+            darkcontrast = Color3.fromRGB(22, 22, 31),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(50, 50, 50),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        ["Kiriot Hub"] = {
+            accent = Color3.fromRGB(255, 170, 0),
+            lightcontrast = Color3.fromRGB(48, 51, 59),
+            darkcontrast = Color3.fromRGB(26, 28, 32),
+            outline = Color3.fromRGB(40, 40, 40),
+            inline = Color3.fromRGB(0, 0, 0),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Jester = {
+            accent = Color3.fromRGB(219, 68, 103),
+            lightcontrast = Color3.fromRGB(36, 36, 36),
+            darkcontrast = Color3.fromRGB(28, 28, 28),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(55, 55, 55),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Entrophy = {
+            accent = Color3.fromRGB(143,181,214),
+            lightcontrast = Color3.fromRGB(45,44,50),
+            darkcontrast = Color3.fromRGB(37,37,42),
+            outline = Color3.fromRGB(16,16,20),
+            inline = Color3.fromRGB(68,67,76),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Interwebz = {
+            accent = Color3.fromRGB(247, 123, 101),
+            lightcontrast = Color3.fromRGB(32,25,43),
+            darkcontrast = Color3.fromRGB(25,18,34),
+            outline = Color3.fromRGB(26,20,36),
+            inline = Color3.fromRGB(48,42,57),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Aimware = {
+            accent = Color3.fromRGB(240, 72, 78),
+            lightcontrast = Color3.fromRGB(31,31,31),
+            darkcontrast = Color3.fromRGB(19,19,19),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(52,51,55),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        ["Dark Lagoon"] = {
+            accent = Color3.fromRGB(41, 92, 168),
+            lightcontrast = Color3.fromRGB(38, 43, 60),
+            darkcontrast = Color3.fromRGB(32,35,51),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(44, 54, 90),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Onetap = {
+            accent = Color3.fromRGB(255,153,54),
+            lightcontrast = Color3.fromRGB(46,46,46),
+            darkcontrast = Color3.fromRGB(30,30,30),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(67,67,67),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Abyss = {
+            accent = Color3.fromRGB(122,130,241),
+            lightcontrast = Color3.fromRGB(32,32,32),
+            darkcontrast = Color3.fromRGB(25,25,25),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(45,45,45),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Vape = {
+            accent = Color3.fromRGB(32,110,87),
+            lightcontrast = Color3.fromRGB(32,32,32),
+            darkcontrast = Color3.fromRGB(25,25,25),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(45,45,45),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Gamesense = {
+            accent = Color3.fromRGB(140,181,67),
+            lightcontrast = Color3.fromRGB(23,23,23),
+            darkcontrast = Color3.fromRGB(12,12,12),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(58,60,65),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Neverlose = {
+            accent = Color3.fromRGB(83,198,131),
+            lightcontrast = Color3.fromRGB(0,15,30),
+            darkcontrast = Color3.fromRGB(3,4,16),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(13,24,37),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+        Primordial = {
+            accent = Color3.fromRGB(194,155,165),
+            lightcontrast = Color3.fromRGB(21,21,21),
+            darkcontrast = Color3.fromRGB(31,31,31),
+            outline = Color3.fromRGB(0,0,0),
+            inline = Color3.fromRGB(67,67,67),
+            textcolor = Color3.fromRGB(255, 255, 255),
+            textdark = Color3.fromRGB(175, 175, 175),
+            textborder = Color3.fromRGB(0, 0, 0),
+            riskytext = Color3.new(1, 1, 0.5),
+            cursoroutline = Color3.fromRGB(10, 10, 10)
+        };
+    };
+    local themeStrings = {}
+    for i,v in next, themes do
+        table.insert(themeStrings, i)
+    end
+    --
+    local Menu = Settings:Section({Name = "Menu", Size = 95}); do
+        Menu:Keybind({Name = "Open / Close", Pointer = "SettingsMenu_CloseKey", Default = Enum.KeyCode.End, Mode = "Toggle", callback = function() Window:Fade() end});
+        Menu:Toggle({Name = "Custom Menu Name", Pointer = "SettingsMenu_CustomName", Callback = function(State)
+            if State then
+                Window:SetName(pointers["SettingsMenu_CustomNameValue"]:get())
+            else
+                Window:SetName("Lotti");
+            end
+        end});
+        Menu:Textbox({Pointer = "SettingsMenu_CustomNameValue", Default = "Lotti", PlaceHolder = "Custom Name Here", Callback = function(State)
+            if pointers["SettingsMenu_CustomName"]:get() then
+                Window:SetName(State)
+            else
+                Window:SetName("Lotti");
+            end
+        end})
+    end;
+    --
+    local Additional = Settings:Section({Name = "Additional", Size = 136}); do
+        Additional:Toggle({Name = "Keybind List", Pointer = "SettingsAdditional_Keybinds", Callback = function(State) Window.keybindslist:Update("Visible", State) end});
+        Additional:Button({Name = "Rejoin Server", Callback = function() game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer) end });
+        Additional:Button({Name = "Copy Join Script"});
+    end;
+    --
+    local Config, Theme = Settings:MultiSection({Fill = true, Sections = {"Config","Theme"}, Side = "Right"}); do
+        Theme:Colorpicker({Name = "Accent", Pointer = "SettingsMenu_Accent", Default = Color3.fromRGB(55, 175, 225), Callback = function(State) library:UpdateColor("Accent", State) end});
+        Theme:Colorpicker({Name = "Light Contrast", Pointer = "SettingsMenu_LightContrast", Default = Color3.fromRGB(30, 30, 30), Callback = function(State) library:UpdateColor("LightContrast", State) end});
+        Theme:Colorpicker({Name = "Dark Contrast", Pointer = "SettingsMenu_DarkContrast", Default = Color3.fromRGB(20,20,20), Callback = function(State) library:UpdateColor("DarkContrast", State) end});
+        Theme:Colorpicker({Name = "Inline", Pointer = "SettingsMenu_Inline", Default = Color3.fromRGB(50, 50, 50), Callback = function(State) library:UpdateColor("Inline", State) end});
+        Theme:Colorpicker({Name = "Outline", Pointer = "SettingsMenu_Outline", Default = Color3.fromRGB(0, 0, 0), Callback = function(State) library:UpdateColor("Outline", State) end});
+        Theme:Colorpicker({Name = "Text Color", Pointer = "SettingsMenu_TextColor", Default = Color3.fromRGB(255,255,255), Callback = function(State) library:UpdateColor("TextColor", State) end});
+        Theme:Colorpicker({Name = "Text Dark", Pointer = "SettingsMenu_TextDark", Default = Color3.fromRGB(175,175,175), Callback = function(State) library:UpdateColor("TextDark", State) end});
+        Theme:Colorpicker({Name = "Text Border", Pointer = "SettingsMenu_TextBorder", Default = Color3.fromRGB(0, 0, 0), Callback = function(State) library:UpdateColor("TextBorder", State) end});
+        Theme:Dropdown({Name = "Theme", Pointer = "SettingsMenu_Theme", Options = themeStrings, Max = 8});
+        Theme:Button({Name = "Load Theme", Callback = function()
+            local selected_theme = pointers["SettingsMenu_Theme"]:get();
+            if selected_theme then
+                pointers["SettingsMenu_Accent"]:set(themes[selected_theme].accent)
+                pointers["SettingsMenu_LightContrast"]:set(themes[selected_theme].lightcontrast)
+                pointers["SettingsMenu_DarkContrast"]:set(themes[selected_theme].darkcontrast)
+                pointers["SettingsMenu_Outline"]:set(themes[selected_theme].outline)
+                pointers["SettingsMenu_Inline"]:set(themes[selected_theme].inline)
+                pointers["SettingsMenu_TextColor"]:set(themes[selected_theme].textcolor)
+                pointers["SettingsMenu_TextDark"]:set(themes[selected_theme].textdark)
+                pointers["SettingsMenu_TextBorder"]:set(themes[selected_theme].textborder)
+            end
+        end});
+    end
+end;
+--
+do --// Features
+    do --// Misc
+        do --// Pathfinding
+            local enabled = pointers["Pathfinding_Enabled"]:get();
+            if enabled then
+            end;
+        end;
+    end;
+end;
+--
+local ArmChamLoop = Camera.ChildAdded:Connect(function()
+    for i,v in pairs(Camera:GetChildren()) do 
+
+        if v.Name == "Left Arm" and pointers["arm_chams"]:get() then 
+            for _,m in pairs(v:GetChildren()) do 
+                if m:IsA("BasePart") and m.Transparency ~= 1 then 
+                    m.Material = Enum.Material[pointers["arm_chams_material"]:get()]
+                    m.Color = pointers["arm_chams_color"]:get().Color
+                    m.Transparency = pointers["arm_chams_color"]:get().Transparency
+                end 
+                if m:FindFirstChild("Mesh") then 
+                    local color = pointers["arm_chams_color"]:get().Color
+                    m.Mesh.VertexColor = Vector3.new(color.R, color.G,color.B)
+                end    
+            end 
+        end 
+
+        if v.Name == "Right Arm" and pointers["arm_chams"]:get() then 
+            for _,m in pairs(v:GetChildren()) do 
+                if m:IsA("BasePart") and m.Transparency ~= 1 then 
+                    m.Material = Enum.Material[pointers["arm_chams_material"]:get()]
+                    m.Color = pointers["arm_chams_color"]:get().Color
+                    m.Transparency = pointers["arm_chams_color"]:get().Transparency
+                end 
+            end 
+        end 
+
+        if pointers["gun_chams"]:get() and v.Name ~= "Left Arm" and v.Name ~= "Right Arm" and v:IsA("Model") then 
+            for _,m in pairs(v:GetChildren()) do 
+                if m:IsA("BasePart") and m.Transparency ~= 1 then 
+                    m.Material = Enum.Material[pointers["gun_chams_material"]:get()]
+                    m.Color = pointers["gun_chams_color"]:get().Color
+                    m.Transparency = pointers["gun_chams_color"]:get().Transparency
+                end 
+                if m:IsA("MeshPart") then 
+                    m.TextureID = ""
+                end 
+                if m.ClassName == "UnionOperation" and m.UsePartColor ~= true then 
+                    m.UsePartColor = true
+                end 
+            end 
+        end 
+    end 
+end)
+-- 
+Run.heartbeat:Connect(function()
+    if ws:FindFirstChild("Map") then 
+        if Lighting:FindFirstChild("MapLighting") then 
+            Lighting.MapLighting:Destroy()
+        end
+        if pointers["visuals_custom_ambient"]:get() then
+            Lighting.Ambient = pointers["visuals_ambient"]:get().Color
+            Lighting.OutdoorAmbient = pointers["visuals_outdoor_ambient"]:get().Color
+        end
+        if pointers["visuals_custom_color_shift"]:get() then
+            Lighting.ColorShift_Top = pointers["visuals_custom_color_shift_top"]:get().Color
+            Lighting.ColorShift_Bottom = pointers["visuals_custom_color_shift_bottom"]:get().Color
+        end
+        if pointers["visuals_custom_shadows"]:get() then
+            Lighting.GlobalShadows = true
+            Lighting.ShadowColor = pointers["visuals_custom_shadows_color"]:get().Color
+            Lighting.ShadowSoftness = pointers["visuals_custom_shadows_softness"]:get()
+        else
+            Lighting.GlobalShadows = false
+        end
+        if pointers["visuals_custom_brightness"]:get() then
+            Lighting.Brightness = pointers["visuals_custom_brightness_number"]:get()
+        end
+        if pointers["visuals_custom_exposure"]:get() then
+            Lighting.ExposureCompensation = pointers["visuals_custom_exposure_number"]:get()
+        end
+        if pointers["visuals_custom_clock_time"]:get() then
+            Lighting.ClockTime = pointers["visuals_custom_clock_time_number"]:get()
+        end
+        if pointers["visuals_fog"]:get() then
+            Lighting.FogStart = pointers["visuals_fog_start"]:get()
+            Lighting.FogEnd = pointers["visuals_fog_end"]:get()
+            Lighting.FogColor = pointers["visuals_fog_color"]:get().Color
+        end
+    end 
+end)
+--
+Window:Initialize();
+
+-- loadstring(readfile("Lotti - Development/games/phantom forces/source.lua"))()

