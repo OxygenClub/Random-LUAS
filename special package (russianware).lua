@@ -3409,7 +3409,6 @@ do
     task.spawn(function()
 		while task.wait() do
 			WatermarkLabel.TextColor3 = Color3.fromHSV(math.abs(math.sin(tick() / 2)), 1, 1)
-            WatermarkLabel.TextSize = math.random(14, 20)
         end
 	end)
 
@@ -3694,9 +3693,7 @@ function Library:CreateWindow(...)
 	task.spawn(function()
 		while task.wait() do
 			WindowLabel.TextColor3 = Color3.fromHSV(math.abs(math.sin(tick() / 2)), 1, 1)
-		
-            Outer.Rotation = math.sin(tick() / 7) * 360
-        end
+		aend
 	end)
 
 
