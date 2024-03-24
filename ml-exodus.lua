@@ -1617,7 +1617,7 @@ function components.slider(holder, options, zindex)
     })
 
     holder.plus = plus
-holder.minus = minus
+    holder.minus = minus
 
     if holder.keybind then
         plus.Position = newUDim2(1, -(13 + holder.keybind.AbsoluteSize.X), 0, 0)
@@ -1636,7 +1636,7 @@ holder.minus = minus
             return
         end
 
-        value = clamp(utility.round(tonumber(value), options.float), options.min, options.max)
+        value = clamp(utility.round(tonumber(value), options.float or 1), options.min, options.max)
         value_text.Text = utility.tostring(value) .. options.suffix
 
         if value ~= current_value then
