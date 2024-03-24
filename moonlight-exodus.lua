@@ -913,7 +913,7 @@ function utility.getclipboard(release_ctrl)
         services.UserInputService.WindowFocused:Wait()
     end
     
-    setthreadcaps(8)
+    setthreadcaps(6)
     library.paste_textbox.Parent = services.CoreGui
     setthreadcaps(2)
     library.paste_textbox:CaptureFocus()
