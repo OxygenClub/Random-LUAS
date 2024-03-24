@@ -913,9 +913,7 @@ function utility.getclipboard(release_ctrl)
         services.UserInputService.WindowFocused:Wait()
     end
     
-    setthreadcaps(6)
     library.paste_textbox.Parent = services.CoreGui
-    setthreadcaps(2)
     library.paste_textbox:CaptureFocus()
     
     if not is_synX then
@@ -1634,6 +1632,10 @@ holder.minus = minus
     local current_tween
 
     local function set(value)
+        if not value then
+            return
+        end
+
         value = clamp(utility.round(tonumber(value), options.float), options.min, options.max)
         value_text.Text = utility.tostring(value) .. options.suffix
 
