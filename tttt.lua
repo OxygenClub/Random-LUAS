@@ -2439,7 +2439,7 @@ function components.colorpicker(holder, options, zindex)
     local function set(color, opacity, from_input, no_picker_update)
         if typeof(color) == "table" then
             opacity =  color.alpha
-            color = fromHex(color.color)
+            color = fromHex(tostring(color.color) or "000000")
         end
 
         if not options.alpha then
@@ -3127,7 +3127,9 @@ function library:LoadConfig(name)
                 local object = self.config_objects[flag]
 
                 if object then
-                    object:Set(value)
+                    pcall(function()
+                        object:Set(value)                    
+                    end)
                 end
             end
 
