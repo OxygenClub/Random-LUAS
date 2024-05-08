@@ -66,7 +66,7 @@ do
         Signals = {};
         ScreenGui = ScreenGui;
 
-        WatermarkName = "otterhook";
+        WatermarkName = "pastehook cracked by office. go buy https://phantom-forces.xyz/";
     };
 
     local RainbowStep = 0
