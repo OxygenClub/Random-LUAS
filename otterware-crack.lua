@@ -1,3 +1,11 @@
+--[[ 
+
+    Cracked by office in 30 minutes
+    Dont buy shit pastes like this.
+    Buy https://phantom-forces.xyz/
+
+]]--
+
 local old;
 old = hookfunction(loadstring, function(...)
     local Args = {...}
